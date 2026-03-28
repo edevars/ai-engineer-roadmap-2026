@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --filter @roadmap/frontend dev",
-    "build": "pnpm --filter @roadmap/frontend build",
+    "build": "pnpm --filter @roadmap/frontend build --emptyOutDir",
     "preview": "pnpm --filter @roadmap/frontend preview",
     "dev:all": "pnpm -r --parallel dev"
   },
