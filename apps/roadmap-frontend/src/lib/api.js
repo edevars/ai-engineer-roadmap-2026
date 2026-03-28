@@ -31,4 +31,16 @@ export const api = {
   getPhases: (roadmap) => request(`/progress/phases/${roadmap}`),
   togglePhase: (roadmap, phaseKey) =>
     request(`/progress/phases/${roadmap}/${phaseKey}`, { method: "PUT" }),
+
+  // Weekly range
+  getWeeklyRange: (from, to) => request(`/progress/weekly/range/${from}/${to}`),
+
+  // Settings
+  getSettings: () => request("/settings"),
+  updateSettings: (body) => request("/settings", { method: "PUT", body: JSON.stringify(body) }),
+  restartProgress: () => request("/settings/restart", { method: "POST" }),
+
+  // Streaks
+  getStreaks: () => request("/streaks"),
+  computeStreaks: () => request("/streaks/compute", { method: "POST" }),
 };

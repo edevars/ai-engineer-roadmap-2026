@@ -1,15 +1,24 @@
 import { createRootRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { useState } from "react";
-import { BookText, BarChart2, Cloud, LogIn } from "lucide-react";
+import { useState, useEffect } from "react";
+import { BookText, BarChart2, Cloud, LogIn, Rocket } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { UserMenu } from "../components/UserMenu";
 import { AuthModal } from "../components/AuthModal";
+import { api } from "../lib/api";
 
 const RootLayout = () => {
   const { location } = useRouterState();
   const currentPath = location.pathname;
   const { user } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
+  const [hasStartDate, setHasStartDate] = useState(null);
+
+  useEffect(() => {
+    if (!user) { setHasStartDate(null); return; }
+    api.getSettings()
+      .then(s => setHasStartDate(!!s.roadmap_start_date))
+      .catch(() => setHasStartDate(null));
+  }, [user]);
 
   const isRoadmap = currentPath === "/";
   const isTracker = currentPath === "/tracker";
@@ -47,6 +56,13 @@ const RootLayout = () => {
                 <span className="hidden sm:inline">Cloud AWS</span>
               </Link>
             </div>
+            {user && hasStartDate === false && (
+              <Link to="/tracker"
+                className="nav-btn flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-4 rounded-lg cursor-pointer font-sans whitespace-nowrap no-underline text-xs sm:text-[14px] font-semibold"
+                style={{ background: "rgba(124,58,237,0.2)", border: "1px solid rgba(124,58,237,0.5)", color: "#a78bfa" }}>
+                <Rocket size={13} /> Empezar
+              </Link>
+            )}
             {user ? (
               <UserMenu />
             ) : (

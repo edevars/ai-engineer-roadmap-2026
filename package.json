@@ -8,7 +8,9 @@
     "preview": "pnpm --filter @roadmap/frontend preview",
     "dev:all": "pnpm -r --parallel dev",
     "db:migrate:local": "pnpm --filter @roadmap/api db:migrate:local",
-    "db:migrate:remote": "pnpm --filter @roadmap/api db:migrate:remote"
+    "db:migrate:remote": "pnpm --filter @roadmap/api db:migrate:remote",
+    "db:migrate:local:v2": "pnpm --filter @roadmap/api db:migrate:local:v2",
+    "db:migrate:remote:v2": "pnpm --filter @roadmap/api db:migrate:remote:v2"
   },
   "packageManager": "pnpm@10.26.2",
   "devDependencies": {
