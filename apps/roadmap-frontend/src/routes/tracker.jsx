@@ -1,18 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import { BarChart2, CalendarDays, Map, Check, X } from "lucide-react";
 import { roadmapData } from "../data/roadmap-data";
 import { AREA_META } from "../data/area-meta";
 import { calendarWeek } from "../data/calendar-data";
+import { useAuth } from "../context/AuthContext";
+import { api } from "../lib/api";
+import { getCurrentWeekKey } from "../lib/week";
 
 const TrackerPage = () => {
+  const { user } = useAuth();
   const [view, setView] = useState("weekly");
   const [weekChecked, setWeekChecked] = useState({});
   const [phaseChecked, setPhaseChecked] = useState({});
+  const [weekKey] = useState(() => getCurrentWeekKey());
+
+  // ── Fetch progress from API when logged in ──
+  useEffect(() => {
+    if (!user) return;
+    api.getWeekly(weekKey).then(d => setWeekChecked(d.cells)).catch(() => {});
+    api.getPhases("main").then(d => setPhaseChecked(d.phases)).catch(() => {});
+  }, [user, weekKey]);
 
   // ── Weekly helpers ──
-  const toggleWeek = (key) => setWeekChecked(p => ({ ...p, [key]: !p[key] }));
+  const toggleWeek = async (key) => {
+    const prev = weekChecked[key];
+    setWeekChecked(p => ({ ...p, [key]: !prev }));
+    if (user) {
+      try { await api.toggleWeeklyCell(weekKey, key); }
+      catch { setWeekChecked(p => ({ ...p, [key]: prev })); }
+    }
+  };
   const [activeCell, setActiveCell] = useState(null); // "di-bi" key or null
   const totalWeekBlocks = calendarWeek.reduce((s, d) => s + d.blocks.length, 0);
   const weekDone = Object.values(weekChecked).filter(Boolean).length;
@@ -22,7 +41,14 @@ const TrackerPage = () => {
   calendarWeek.forEach(d => d.blocks.forEach(b => { hoursPerArea[b.area] = (hoursPerArea[b.area] || 0) + b.duration; }));
 
   // ── Total helpers ──
-  const togglePhase = (key) => setPhaseChecked(p => ({ ...p, [key]: !p[key] }));
+  const togglePhase = async (key) => {
+    const prev = phaseChecked[key];
+    setPhaseChecked(p => ({ ...p, [key]: !prev }));
+    if (user) {
+      try { await api.togglePhase("main", key); }
+      catch { setPhaseChecked(p => ({ ...p, [key]: prev })); }
+    }
+  };
   const allPhases = roadmapData.flatMap(area => area.phases.map((_, pi) => ({ areaId: area.id, phaseIdx: pi, key: `${area.id}-${pi}` })));
   const totalPhases = allPhases.length;
   const totalDonePhases = allPhases.filter(p => phaseChecked[p.key]).length;

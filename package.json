@@ -3,9 +3,15 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --filter @roadmap/frontend dev",
+    "dev:api": "pnpm --filter @roadmap/api dev",
     "build": "pnpm --filter @roadmap/frontend build --emptyOutDir",
     "preview": "pnpm --filter @roadmap/frontend preview",
-    "dev:all": "pnpm -r --parallel dev"
+    "dev:all": "pnpm -r --parallel dev",
+    "db:migrate:local": "pnpm --filter @roadmap/api db:migrate:local",
+    "db:migrate:remote": "pnpm --filter @roadmap/api db:migrate:remote"
   },
-  "packageManager": "pnpm@10.26.2"
+  "packageManager": "pnpm@10.26.2",
+  "devDependencies": {
+    "wrangler": "^4.78.0"
+  }
 }
