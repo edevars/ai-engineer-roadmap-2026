@@ -12,12 +12,12 @@ export const ObjectiveItem = ({ obj, color }) => {
       <button onClick={() => setOpen(!open)} className="objective-btn"
         style={{ width: "100%", display: "flex", alignItems: "center", gap: "10px", padding: isMobile ? "12px" : "10px 14px", background: open ? color + "0d" : "rgba(255,255,255,0.02)", border: "none", cursor: "pointer", textAlign: "left", fontFamily: "'DM Sans', system-ui, sans-serif" }}>
         <ChevronRight size={13} className={`chevron-icon${open ? " open" : ""}`} style={{ color, flexShrink: 0 }} />
-        <span style={{ color: "#dde6f0", fontSize: isMobile ? "13px" : "13.5px", fontWeight: 500, lineHeight: 1.4 }}>{obj.topic}</span>
+        <span style={{ color: "#dde6f0", fontSize: isMobile ? "13px" : "15px", fontWeight: 500, lineHeight: 1.4 }}>{obj.topic}</span>
       </button>
       <div className={`accordion-wrapper${open ? " open" : ""}`}>
         <div className="accordion-inner">
           <div style={{ padding: isMobile ? "12px" : "12px 14px 16px 38px", background: color + "07", borderTop: `1px solid ${color}1a` }}>
-            <p style={{ color: "#9aabb8", fontSize: "13px", lineHeight: 1.75, marginBottom: "14px" }}>{obj.why}</p>
+            <p style={{ color: "#9aabb8", fontSize: isMobile ? "13px" : "15px", lineHeight: 1.75, marginBottom: "14px" }}>{obj.why}</p>
 
             {/* Recurso + Mini-entregable */}
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "10px", marginBottom: obj.leetcodeProblems ? "14px" : "0" }}>
@@ -29,18 +29,18 @@ export const ObjectiveItem = ({ obj, color }) => {
                 </div>
                 <div>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
-                    <span style={{ color: "#cdd6e0", fontSize: "11.5px", fontWeight: 600 }}>Recurso</span>
-                    {(() => { const b = getBadge(obj.resource); return <span style={{ fontSize: "9px", padding: "1px 5px", borderRadius: "4px", background: b.bg, color: b.color, fontWeight: 700 }}>{b.label}</span>; })()}
+                    <span style={{ color: "#cdd6e0", fontSize: isMobile ? "11.5px" : "13px", fontWeight: 600 }}>Recurso</span>
+                    {(() => { const b = getBadge(obj.resource); return <span style={{ fontSize: isMobile ? "9px" : "10px", padding: "1px 5px", borderRadius: "4px", background: b.bg, color: b.color, fontWeight: 700 }}>{b.label}</span>; })()}
                   </div>
-                  <span style={{ color, fontSize: "12px", lineHeight: 1.4, display: "block" }}>{obj.resource.name} ↗</span>
+                  <span style={{ color, fontSize: isMobile ? "12px" : "14px", lineHeight: 1.4, display: "block" }}>{obj.resource.name} ↗</span>
                 </div>
               </a>
               <div style={{ padding: "10px 12px", background: color + "0d", border: `1px solid ${color}22`, borderRadius: "8px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
                   <Sparkles size={13} style={{ color, flexShrink: 0 }} />
-                  <span style={{ color, fontSize: "11.5px", fontWeight: 600 }}>Mini-entregable</span>
+                  <span style={{ color, fontSize: isMobile ? "11.5px" : "13px", fontWeight: 600 }}>Mini-entregable</span>
                 </div>
-                <p style={{ color: "#b0bec8", fontSize: "12px", lineHeight: 1.5, margin: 0 }}>{obj.miniDeliverable}</p>
+                <p style={{ color: "#b0bec8", fontSize: isMobile ? "12px" : "14px", lineHeight: 1.5, margin: 0 }}>{obj.miniDeliverable}</p>
               </div>
             </div>
 
@@ -49,7 +49,7 @@ export const ObjectiveItem = ({ obj, color }) => {
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "8px" }}>
                   <Terminal size={12} style={{ color: "#FF6B35", flexShrink: 0 }} />
-                  <span style={{ color: "#7a8898", fontSize: "10px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Problemas LeetCode</span>
+                  <span style={{ color: "#7a8898", fontSize: isMobile ? "10px" : "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Problemas LeetCode</span>
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                   {obj.leetcodeProblems.map((p, i) => <LCChip key={i} p={p} />)}

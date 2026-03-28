@@ -36,7 +36,7 @@ const TrackerPage = () => {
     background: active ? "rgba(167,139,250,0.15)" : "rgba(255,255,255,0.04)",
     border: `1px solid ${active ? "rgba(167,139,250,0.5)" : "rgba(255,255,255,0.08)"}`,
     borderRadius: "8px", color: active ? "#a78bfa" : "#5a6880",
-    fontSize: isMobile ? "12px" : "13px", fontWeight: active ? 700 : 400,
+    fontSize: isMobile ? "12px" : "15px", fontWeight: active ? 700 : 400,
     cursor: "pointer", fontFamily: "'DM Sans', system-ui, sans-serif",
     whiteSpace: "nowrap",
   });
@@ -50,9 +50,9 @@ const TrackerPage = () => {
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
               <BarChart2 size={22} style={{ color: "#a78bfa" }} />
-              <h2 style={{ fontSize: isMobile ? "20px" : "24px", fontWeight: 700, color: "#e0e6f0" }}>Progress Tracker</h2>
+              <h2 style={{ fontSize: isMobile ? "20px" : "28px", fontWeight: 700, color: "#e0e6f0" }}>Progress Tracker</h2>
             </div>
-            <p style={{ color: "#5a6880", fontSize: "13px", marginLeft: "30px" }}>Seguimiento semanal y total del roadmap</p>
+            <p style={{ color: "#5a6880", fontSize: isMobile ? "13px" : "15px", marginLeft: "30px" }}>Seguimiento semanal y total del roadmap</p>
           </div>
           {/* Sub-view switcher */}
           <div style={{ display: "flex", gap: "8px" }}>
@@ -69,8 +69,8 @@ const TrackerPage = () => {
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "10px" }}>
           <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "12px", padding: "14px 18px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-              <span style={{ color: "#7a8898", fontSize: "12px", display:"flex", alignItems:"center", gap:"5px" }}><CalendarDays size={12}/> Esta semana</span>
-              <span style={{ color: "#e0e6f0", fontSize: "12px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{weekDone}/{totalWeekBlocks} · {weekPct}%</span>
+              <span style={{ color: "#7a8898", fontSize: isMobile ? "12px" : "14px", display:"flex", alignItems:"center", gap:"5px" }}><CalendarDays size={isMobile ? 12 : 14}/> Esta semana</span>
+              <span style={{ color: "#e0e6f0", fontSize: isMobile ? "12px" : "14px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{weekDone}/{totalWeekBlocks} · {weekPct}%</span>
             </div>
             <div style={{ height: "6px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
               <div style={{ height: "100%", width: `${weekPct}%`, background: "linear-gradient(90deg,#7C3AED,#00D4FF)", borderRadius: "3px", transition: "width 0.4s" }} />
@@ -78,8 +78,8 @@ const TrackerPage = () => {
           </div>
           <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "12px", padding: "14px 18px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-              <span style={{ color: "#7a8898", fontSize: "12px", display:"flex", alignItems:"center", gap:"5px" }}><Map size={12}/> Total roadmap</span>
-              <span style={{ color: "#e0e6f0", fontSize: "12px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{totalDonePhases}/{totalPhases} fases · {totalPct}%</span>
+              <span style={{ color: "#7a8898", fontSize: isMobile ? "12px" : "14px", display:"flex", alignItems:"center", gap:"5px" }}><Map size={isMobile ? 12 : 14}/> Total roadmap</span>
+              <span style={{ color: "#e0e6f0", fontSize: isMobile ? "12px" : "14px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{totalDonePhases}/{totalPhases} fases · {totalPct}%</span>
             </div>
             <div style={{ height: "6px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
               <div style={{ height: "100%", width: `${totalPct}%`, background: "linear-gradient(90deg,#FF6B35,#FFB800)", borderRadius: "3px", transition: "width 0.4s" }} />
@@ -100,12 +100,12 @@ const TrackerPage = () => {
               return (
                 <div key={id} style={{ display: "flex", alignItems: "center", gap: "4px", padding: "3px 9px", background: m.color + "14", border: `1px solid ${m.color}30`, borderRadius: "20px" }}>
                   <m.IconC size={10} style={{ color: m.color, flexShrink: 0 }} />
-                  <span style={{ color: m.color, fontSize: "10px", fontWeight: 600 }}>{m.label}</span>
-                  <span style={{ color: "#4a5060", fontSize: "10px" }}>{Math.floor(mins/60) > 0 ? `${Math.floor(mins/60)}h` : ""}{mins%60 > 0 ? `${mins%60}m` : ""}</span>
+                  <span style={{ color: m.color, fontSize: isMobile ? "10px" : "12px", fontWeight: 600 }}>{m.label}</span>
+                  <span style={{ color: "#4a5060", fontSize: isMobile ? "10px" : "12px" }}>{Math.floor(mins/60) > 0 ? `${Math.floor(mins/60)}h` : ""}{mins%60 > 0 ? `${mins%60}m` : ""}</span>
                 </div>
               );
             })}
-            <span style={{ color: "#3a4a5a", fontSize: "11px", fontFamily: "'Space Mono',monospace", marginLeft: "auto" }}>{Math.floor(totalWeekMin/60)}h {totalWeekMin%60}m / semana</span>
+            <span style={{ color: "#3a4a5a", fontSize: isMobile ? "11px" : "13px", fontFamily: "'Space Mono',monospace", marginLeft: "auto" }}>{Math.floor(totalWeekMin/60)}h {totalWeekMin%60}m / semana</span>
           </div>
 
           {/* 7-day grid */}
@@ -123,7 +123,7 @@ const TrackerPage = () => {
                     border: dayDone ? "2px solid rgba(0,200,150,0.45)" : isOpen ? "2px solid rgba(167,139,250,0.55)" : "1px solid rgba(255,255,255,0.07)",
                   }}>
                     <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: isMobile ? "3px" : "6px", padding: isMobile ? "4px" : "8px" }}>
-                      <span style={{ color: dayDone ? "#00c896" : isOpen ? "#a78bfa" : "#6a7888", fontSize: isMobile ? "9px" : "11px", fontWeight: 700, fontFamily: "'Space Mono',monospace", textTransform: "uppercase", letterSpacing: "0.05em" }}>{day.shortDay}</span>
+                      <span style={{ color: dayDone ? "#00c896" : isOpen ? "#a78bfa" : "#6a7888", fontSize: isMobile ? "9px" : "13px", fontWeight: 700, fontFamily: "'Space Mono',monospace", textTransform: "uppercase", letterSpacing: "0.05em" }}>{day.shortDay}</span>
                       {/* Color dots */}
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "2px", justifyContent: "center" }}>
                         {day.blocks.map((b, bi) => {
@@ -133,8 +133,8 @@ const TrackerPage = () => {
                         })}
                       </div>
                       {dayDone
-                        ? <span style={{ color: "#00c896", fontSize: isMobile ? "13px" : "17px" }}>✓</span>
-                        : <span style={{ color: "#3a4050", fontSize: isMobile ? "8px" : "9px", fontFamily: "'Space Mono',monospace" }}>{Math.floor(day.totalMin/60)}h{day.totalMin%60 > 0 ? `${day.totalMin%60}m` : ""}</span>
+                        ? <span style={{ color: "#00c896", fontSize: isMobile ? "13px" : "19px" }}>✓</span>
+                        : <span style={{ color: "#3a4050", fontSize: isMobile ? "8px" : "11px", fontFamily: "'Space Mono',monospace" }}>{Math.floor(day.totalMin/60)}h{day.totalMin%60 > 0 ? `${day.totalMin%60}m` : ""}</span>
                       }
                     </div>
                   </div>
@@ -152,7 +152,7 @@ const TrackerPage = () => {
                           {done && <Check size={6} strokeWidth={3} style={{ color: "#000" }} />}
                         </div>
                         <m.IconC size={9} style={{ color: m.color, flexShrink: 0 }} />
-                        <span style={{ color: "#3a4a5a", fontSize: "9px", fontFamily: "'Space Mono',monospace" }}>{b.duration}m</span>
+                        <span style={{ color: "#3a4a5a", fontSize: "11px", fontFamily: "'Space Mono',monospace" }}>{b.duration}m</span>
                       </div>
                     );
                   })}
@@ -168,8 +168,8 @@ const TrackerPage = () => {
                 <div style={{ borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(167,139,250,0.3)", background: "rgba(167,139,250,0.04)" }}>
                   <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <span style={{ color: "#a78bfa", fontWeight: 700, fontSize: "15px", fontFamily: "'Space Mono',monospace" }}>{calendarWeek[activeDay].day}</span>
-                      <span style={{ color: "#5a6880", fontSize: "12px" }}>{calendarWeek[activeDay].focus}</span>
+                      <span style={{ color: "#a78bfa", fontWeight: 700, fontSize: isMobile ? "15px" : "17px", fontFamily: "'Space Mono',monospace" }}>{calendarWeek[activeDay].day}</span>
+                      <span style={{ color: "#5a6880", fontSize: isMobile ? "12px" : "14px" }}>{calendarWeek[activeDay].focus}</span>
                     </div>
                     <button onClick={() => setActiveDay(null)} style={{ background: "none", border: "none", color: "#5a6880", cursor: "pointer", lineHeight: 1, padding: "4px", display:"flex", alignItems:"center" }}>
                       <X size={16} />
@@ -187,10 +187,10 @@ const TrackerPage = () => {
                           </div>
                           <div style={{ flex: 1 }}>
                             <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "5px", flexWrap: "wrap" }}>
-                              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: meta.color + "1a", border: `1px solid ${meta.color}35`, borderRadius: "5px", padding: "2px 8px", fontSize: "10px", color: meta.color, fontWeight: 700 }}>{meta.icon} {meta.label}</span>
-                              <span style={{ color: "#4a5a6a", fontSize: "10px", fontFamily: "'Space Mono',monospace" }}>{block.duration} min</span>
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: meta.color + "1a", border: `1px solid ${meta.color}35`, borderRadius: "5px", padding: "2px 8px", fontSize: isMobile ? "10px" : "12px", color: meta.color, fontWeight: 700 }}>{meta.icon} {meta.label}</span>
+                              <span style={{ color: "#4a5a6a", fontSize: isMobile ? "10px" : "12px", fontFamily: "'Space Mono',monospace" }}>{block.duration} min</span>
                             </div>
-                            <p style={{ color: done ? "#4a6070" : "#c0ccd8", fontSize: "13px", lineHeight: 1.55, margin: 0, textDecoration: done ? "line-through" : "none" }}>{block.label}</p>
+                            <p style={{ color: done ? "#4a6070" : "#c0ccd8", fontSize: isMobile ? "13px" : "15px", lineHeight: 1.55, margin: 0, textDecoration: done ? "line-through" : "none" }}>{block.label}</p>
                           </div>
                         </div>
                       );
@@ -217,8 +217,8 @@ const TrackerPage = () => {
             ].map((p, i) => (
               <div key={i} className="principle-card" style={{ padding: "12px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "10px", cursor: "default" }}>
                 <span style={{ fontSize: "15px" }}>{p.icon}</span>
-                <div style={{ color: "#b0bcc8", fontSize: "11.5px", fontWeight: 600, margin: "5px 0 3px" }}>{p.title}</div>
-                <div style={{ color: "#4a5a6a", fontSize: "11px", lineHeight: 1.55 }}>{p.body}</div>
+                <div style={{ color: "#b0bcc8", fontSize: isMobile ? "11.5px" : "13px", fontWeight: 600, margin: "5px 0 3px" }}>{p.title}</div>
+                <div style={{ color: "#4a5a6a", fontSize: isMobile ? "11px" : "13px", lineHeight: 1.55 }}>{p.body}</div>
               </div>
             ))}
           </div>
@@ -247,11 +247,11 @@ const TrackerPage = () => {
                       <circle cx="27" cy="27" r="22" fill="none" stroke={area.color} strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={dashOffset} strokeLinecap="round" style={{ transition: "stroke-dashoffset 0.5s" }} />
                     </svg>
                     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ color: area.color, fontSize: "13px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{pct}%</span>
+                      <span style={{ color: area.color, fontSize: isMobile ? "13px" : "15px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{pct}%</span>
                     </div>
                   </div>
-                  <span style={{ color: "#dde6f0", fontSize: "11px", fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>{area.title}</span>
-                  <span style={{ color: "#4a5a6a", fontSize: "10px", fontFamily: "'Space Mono',monospace" }}>{donePh}/{totalPh} fases</span>
+                  <span style={{ color: "#dde6f0", fontSize: isMobile ? "11px" : "13px", fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>{area.title}</span>
+                  <span style={{ color: "#4a5a6a", fontSize: isMobile ? "10px" : "12px", fontFamily: "'Space Mono',monospace" }}>{donePh}/{totalPh} fases</span>
                 </div>
               );
             })}
@@ -269,15 +269,15 @@ const TrackerPage = () => {
                   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <span style={{ fontSize: "18px" }}>{area.icon}</span>
                     <div>
-                      <div style={{ color: area.color, fontWeight: 700, fontSize: "14px" }}>{area.title}</div>
-                      <div style={{ color: "#4a5a6a", fontSize: "11px" }}>{area.period} · {area.subtitle}</div>
+                      <div style={{ color: area.color, fontWeight: 700, fontSize: isMobile ? "14px" : "16px" }}>{area.title}</div>
+                      <div style={{ color: "#4a5a6a", fontSize: isMobile ? "11px" : "13px" }}>{area.period} · {area.subtitle}</div>
                     </div>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <div style={{ width: isMobile ? "80px" : "120px", height: "6px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
                       <div style={{ height: "100%", width: `${areaPct}%`, background: area.color, borderRadius: "3px", transition: "width 0.4s" }} />
                     </div>
-                    <span style={{ color: area.color, fontSize: "12px", fontWeight: 700, fontFamily: "'Space Mono',monospace", minWidth: "36px", textAlign: "right" }}>{areaPct}%</span>
+                    <span style={{ color: area.color, fontSize: isMobile ? "12px" : "14px", fontWeight: 700, fontFamily: "'Space Mono',monospace", minWidth: "36px", textAlign: "right" }}>{areaPct}%</span>
                   </div>
                 </div>
 
@@ -302,17 +302,17 @@ const TrackerPage = () => {
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "3px", flexWrap: "wrap" }}>
-                            <span style={{ background: area.color + "22", color: area.color, border: `1px solid ${area.color}40`, borderRadius: "5px", padding: "1px 8px", fontSize: "10px", fontFamily: "'Space Mono',monospace", fontWeight: 600, whiteSpace: "nowrap" }}>
+                            <span style={{ background: area.color + "22", color: area.color, border: `1px solid ${area.color}40`, borderRadius: "5px", padding: "1px 8px", fontSize: isMobile ? "10px" : "12px", fontFamily: "'Space Mono',monospace", fontWeight: 600, whiteSpace: "nowrap" }}>
                               {phase.label}
                             </span>
                             {phase.isPremodule && (
-                              <span style={{ background: "rgba(120,180,255,0.12)", color: "#78b4ff", border: "1px solid rgba(120,180,255,0.3)", borderRadius: "5px", padding: "1px 7px", fontSize: "9px", fontWeight: 700 }}>PRE-MÓDULO</span>
+                              <span style={{ background: "rgba(120,180,255,0.12)", color: "#78b4ff", border: "1px solid rgba(120,180,255,0.3)", borderRadius: "5px", padding: "1px 7px", fontSize: isMobile ? "9px" : "11px", fontWeight: 700 }}>PRE-MÓDULO</span>
                             )}
                           </div>
-                          <p style={{ color: done ? "#4a6070" : "#c0ccd8", fontSize: isMobile ? "12px" : "13px", fontWeight: 600, margin: "0 0 3px", textDecoration: done ? "line-through" : "none", lineHeight: 1.3 }}>
+                          <p style={{ color: done ? "#4a6070" : "#c0ccd8", fontSize: isMobile ? "12px" : "15px", fontWeight: 600, margin: "0 0 3px", textDecoration: done ? "line-through" : "none", lineHeight: 1.3 }}>
                             {phase.title}
                           </p>
-                          <p style={{ color: done ? "#3a5060" : "#5a6880", fontSize: "11.5px", margin: 0, lineHeight: 1.45, textDecoration: done ? "line-through" : "none" }}>
+                          <p style={{ color: done ? "#3a5060" : "#5a6880", fontSize: isMobile ? "11.5px" : "13px", margin: 0, lineHeight: 1.45, textDecoration: done ? "line-through" : "none" }}>
                             {phase.deliverable}
                           </p>
                         </div>
@@ -324,7 +324,7 @@ const TrackerPage = () => {
             );
           })}
 
-          <div style={{ marginTop: "8px", padding: "12px 16px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "10px", color: "#4a5a6a", fontSize: "12px", lineHeight: 1.6 }}>
+          <div style={{ marginTop: "8px", padding: "12px 16px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "10px", color: "#4a5a6a", fontSize: isMobile ? "12px" : "14px", lineHeight: 1.6 }}>
             <strong style={{ color: "#6a7888" }}>Cómo usar:</strong> Marca una fase como completada cuando hayas terminado su entregable y puedas cumplir su métrica de éxito — no antes.
           </div>
         </div>

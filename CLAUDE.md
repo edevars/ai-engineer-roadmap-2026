@@ -53,6 +53,10 @@ Key conventions:
 - Mobile breakpoint: 640px via `useIsMobile()` hook — conditionally adjusts grid columns, padding, and font sizes
 - Hover states via `onMouseEnter`/`onMouseLeave` (not CSS `:hover`)
 
+## Git
+
+Use [gitmoji](https://gitmoji.dev/) prefixes in all commit messages (e.g. `✨ Add new feature`, `🐛 Fix bug`, `♻️ Refactor code`, `💄 Update styles`).
+
 ## Language
 
 UI text is in Spanish. The `<html lang="es">` attribute is set in `index.html`.

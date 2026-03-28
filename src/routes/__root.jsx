@@ -14,7 +14,7 @@ const RootLayout = () => {
     border: `1px solid ${isActive ? "rgba(255,255,255,0.2)" : "transparent"}`,
     borderRadius: "8px",
     color: isActive ? "#e0e6f0" : "#5a6880",
-    fontSize: isMobile ? "12px" : "13px", fontWeight: isActive ? 700 : 500,
+    fontSize: isMobile ? "12px" : "15px", fontWeight: isActive ? 700 : 500,
     cursor: "pointer", fontFamily: "'DM Sans', system-ui, sans-serif",
     whiteSpace: "nowrap",
     textDecoration: "none",
@@ -26,10 +26,10 @@ const RootLayout = () => {
       <div className="sticky-header" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)", padding: isMobile ? "20px 16px" : "24px 40px", background: "rgba(10,13,18,0.82)" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
           <div>
-            <div style={{ fontFamily: "'Space Mono', monospace", color: "#4a90b8", fontSize: isMobile ? "9px" : "11px", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "6px" }}>
+            <div style={{ fontFamily: "'Space Mono', monospace", color: "#4a90b8", fontSize: isMobile ? "9px" : "13px", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "6px" }}>
               Roadmap 2026 — Ingeniero de Clase Mundial
             </div>
-            <h1 style={{ fontSize: isMobile ? "20px" : "26px", fontWeight: 700, background: "linear-gradient(135deg, #ffffff 0%, #8899bb 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", letterSpacing: "-0.02em" }}>
+            <h1 style={{ fontSize: isMobile ? "20px" : "30px", fontWeight: 700, background: "linear-gradient(135deg, #ffffff 0%, #8899bb 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", letterSpacing: "-0.02em" }}>
               Skill Upgrade Plan
             </h1>
           </div>
