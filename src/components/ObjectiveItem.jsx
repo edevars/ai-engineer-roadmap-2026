@@ -1,57 +1,56 @@
 import { useState } from "react";
 import { BookMarked, BookOpen, ChevronRight, Sparkles, Terminal } from "lucide-react";
-import { useIsMobile } from "../hooks/use-is-mobile";
 import { getBadge } from "../utils/badges";
 import { LCChip } from "./LCChip";
 
 export const ObjectiveItem = ({ obj, color }) => {
   const [open, setOpen] = useState(false);
-  const isMobile = useIsMobile();
   return (
-    <div style={{ marginBottom: "6px", borderRadius: "8px", overflow: "hidden", border: `1px solid ${open ? color + "44" : "rgba(255,255,255,0.06)"}`, transition: "border-color 0.2s" }}>
-      <button onClick={() => setOpen(!open)} className="objective-btn"
-        style={{ width: "100%", display: "flex", alignItems: "center", gap: "10px", padding: isMobile ? "12px" : "10px 14px", background: open ? color + "0d" : "rgba(255,255,255,0.02)", border: "none", cursor: "pointer", textAlign: "left", fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+    <div className="mb-1.5 rounded-lg overflow-hidden transition-[border-color] duration-200" style={{ border: `1px solid ${open ? color + "44" : "rgba(255,255,255,0.06)"}` }}>
+      <button onClick={() => setOpen(!open)} className="objective-btn w-full flex items-center gap-2.5 p-3 sm:px-3.5 sm:py-2.5 border-none cursor-pointer text-left font-sans"
+        style={{ background: open ? color + "0d" : "rgba(255,255,255,0.02)" }}>
         <ChevronRight size={13} className={`chevron-icon${open ? " open" : ""}`} style={{ color, flexShrink: 0 }} />
-        <span style={{ color: "#dde6f0", fontSize: isMobile ? "13px" : "15px", fontWeight: 500, lineHeight: 1.4 }}>{obj.topic}</span>
+        <span className="text-[13px] sm:text-[15px] font-medium leading-relaxed" style={{ color: "#dde6f0" }}>{obj.topic}</span>
       </button>
       <div className={`accordion-wrapper${open ? " open" : ""}`}>
         <div className="accordion-inner">
-          <div style={{ padding: isMobile ? "12px" : "12px 14px 16px 38px", background: color + "07", borderTop: `1px solid ${color}1a` }}>
-            <p style={{ color: "#9aabb8", fontSize: isMobile ? "13px" : "15px", lineHeight: 1.75, marginBottom: "14px" }}>{obj.why}</p>
+          <div className="p-3 sm:pl-[38px] sm:pr-3.5 sm:pb-4 sm:pt-3" style={{ background: color + "07", borderTop: `1px solid ${color}1a` }}>
+            <p className="text-[13px] sm:text-[15px] leading-[1.75] mb-3.5" style={{ color: "#9aabb8" }}>{obj.why}</p>
 
             {/* Recurso + Mini-entregable */}
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "10px", marginBottom: obj.leetcodeProblems ? "14px" : "0" }}>
-              <a href={obj.resource.url} target="_blank" rel="noopener noreferrer" className="resource-link"
-                style={{ display: "flex", alignItems: "flex-start", gap: "8px", padding: "10px 12px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", textDecoration: "none", cursor: "pointer" }}
+            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-2.5 ${obj.leetcodeProblems ? "mb-3.5" : ""}`}>
+              <a href={obj.resource.url} target="_blank" rel="noopener noreferrer"
+                className="resource-link flex items-start gap-2 p-2.5 px-3 rounded-lg no-underline cursor-pointer"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
               >
-                <div style={{ flexShrink: 0, marginTop: "2px", color: "#7a8898" }}>
+                <div className="shrink-0 mt-0.5" style={{ color: "#7a8898" }}>
                   {obj.resource.owned ? <BookMarked size={14} /> : <BookOpen size={14} />}
                 </div>
                 <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
-                    <span style={{ color: "#cdd6e0", fontSize: isMobile ? "11.5px" : "13px", fontWeight: 600 }}>Recurso</span>
-                    {(() => { const b = getBadge(obj.resource); return <span style={{ fontSize: isMobile ? "9px" : "10px", padding: "1px 5px", borderRadius: "4px", background: b.bg, color: b.color, fontWeight: 700 }}>{b.label}</span>; })()}
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <span className="text-[11.5px] sm:text-[13px] font-semibold" style={{ color: "#cdd6e0" }}>Recurso</span>
+                    {(() => { const b = getBadge(obj.resource); return <span className="text-[9px] sm:text-[10px] py-px px-[5px] rounded font-bold" style={{ background: b.bg, color: b.color }}>{b.label}</span>; })()}
                   </div>
-                  <span style={{ color, fontSize: isMobile ? "12px" : "14px", lineHeight: 1.4, display: "block" }}>{obj.resource.name} ↗</span>
+                  <span className="text-[12px] sm:text-sm leading-relaxed block" style={{ color }}>{obj.resource.name} ↗</span>
                 </div>
               </a>
-              <div style={{ padding: "10px 12px", background: color + "0d", border: `1px solid ${color}22`, borderRadius: "8px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+              <div className="p-2.5 px-3 rounded-lg" style={{ background: color + "0d", border: `1px solid ${color}22` }}>
+                <div className="flex items-center gap-1.5 mb-1">
                   <Sparkles size={13} style={{ color, flexShrink: 0 }} />
-                  <span style={{ color, fontSize: isMobile ? "11.5px" : "13px", fontWeight: 600 }}>Mini-entregable</span>
+                  <span className="text-[11.5px] sm:text-[13px] font-semibold" style={{ color }}>Mini-entregable</span>
                 </div>
-                <p style={{ color: "#b0bec8", fontSize: isMobile ? "12px" : "14px", lineHeight: 1.5, margin: 0 }}>{obj.miniDeliverable}</p>
+                <p className="text-[12px] sm:text-sm leading-normal m-0" style={{ color: "#b0bec8" }}>{obj.miniDeliverable}</p>
               </div>
             </div>
 
             {/* LeetCode problems */}
             {obj.leetcodeProblems && (
               <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "8px" }}>
+                <div className="flex items-center gap-1.5 mb-2">
                   <Terminal size={12} style={{ color: "#FF6B35", flexShrink: 0 }} />
-                  <span style={{ color: "#7a8898", fontSize: isMobile ? "10px" : "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Problemas LeetCode</span>
+                  <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase" style={{ color: "#7a8898" }}>Problemas LeetCode</span>
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                <div className="flex flex-wrap gap-1.5">
                   {obj.leetcodeProblems.map((p, i) => <LCChip key={i} p={p} />)}
                 </div>
               </div>

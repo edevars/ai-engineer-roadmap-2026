@@ -1,47 +1,37 @@
 import { createRootRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { BookText, BarChart2 } from "lucide-react";
-import { useIsMobile } from "../hooks/use-is-mobile";
 
 const RootLayout = () => {
-  const isMobile = useIsMobile();
   const { location } = useRouterState();
   const currentPath = location.pathname;
 
-  const navBtnStyle = (isActive, accent) => ({
-    display: "flex", alignItems: "center", gap: "6px",
-    padding: isMobile ? "7px 14px" : "8px 20px",
-    background: isActive ? (accent || "rgba(255,255,255,0.1)") : "transparent",
-    border: `1px solid ${isActive ? "rgba(255,255,255,0.2)" : "transparent"}`,
-    borderRadius: "8px",
-    color: isActive ? "#e0e6f0" : "#5a6880",
-    fontSize: isMobile ? "12px" : "15px", fontWeight: isActive ? 700 : 500,
-    cursor: "pointer", fontFamily: "'DM Sans', system-ui, sans-serif",
-    whiteSpace: "nowrap",
-    textDecoration: "none",
-  });
+  const isRoadmap = currentPath === "/";
+  const isTracker = currentPath === "/tracker";
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0d12", fontFamily: "'DM Sans', system-ui, sans-serif", color: "#e0e6f0" }}>
+    <div className="min-h-screen bg-[#0a0d12] font-sans text-[#e0e6f0]">
       {/* ── HEADER with top-level page nav ── */}
-      <div className="sticky-header" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)", padding: isMobile ? "20px 16px" : "24px 40px", background: "rgba(10,13,18,0.82)" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+      <div className="sticky-header py-5 px-4 sm:py-6 sm:px-10" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)", background: "rgba(10,13,18,0.82)" }}>
+        <div className="flex items-start justify-between flex-wrap gap-3">
           <div>
-            <div style={{ fontFamily: "'Space Mono', monospace", color: "#4a90b8", fontSize: isMobile ? "9px" : "13px", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "6px" }}>
+            <div className="font-mono text-[9px] sm:text-[13px] tracking-widest uppercase mb-1.5" style={{ color: "#4a90b8" }}>
               Roadmap 2026 — Ingeniero de Clase Mundial
             </div>
-            <h1 style={{ fontSize: isMobile ? "20px" : "30px", fontWeight: 700, background: "linear-gradient(135deg, #ffffff 0%, #8899bb 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", letterSpacing: "-0.02em" }}>
+            <h1 className="text-xl sm:text-[30px] font-bold tracking-tight bg-gradient-to-br from-white to-[#8899bb] bg-clip-text" style={{ WebkitTextFillColor: "transparent" }}>
               Skill Upgrade Plan
             </h1>
           </div>
           {/* Page switcher */}
-          <div style={{ display: "flex", gap: "4px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "10px", padding: "4px" }}>
-            <Link to="/" className="nav-btn" style={navBtnStyle(currentPath === "/")}>
+          <div className="flex gap-1 rounded-[10px] p-1" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
+            <Link to="/" className={`nav-btn flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-5 rounded-lg cursor-pointer font-sans whitespace-nowrap no-underline text-xs sm:text-[15px] ${isRoadmap ? "font-bold" : "font-medium"}`}
+              style={{ background: isRoadmap ? "rgba(255,255,255,0.1)" : "transparent", border: `1px solid ${isRoadmap ? "rgba(255,255,255,0.2)" : "transparent"}`, color: isRoadmap ? "#e0e6f0" : "#5a6880" }}>
               <BookText size={14} />
-              {!isMobile && "Roadmap"}
+              <span className="hidden sm:inline">Roadmap</span>
             </Link>
-            <Link to="/tracker" className="nav-btn" style={navBtnStyle(currentPath === "/tracker", "rgba(167,139,250,0.18)")}>
+            <Link to="/tracker" className={`nav-btn flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-5 rounded-lg cursor-pointer font-sans whitespace-nowrap no-underline text-xs sm:text-[15px] ${isTracker ? "font-bold" : "font-medium"}`}
+              style={{ background: isTracker ? "rgba(167,139,250,0.18)" : "transparent", border: `1px solid ${isTracker ? "rgba(255,255,255,0.2)" : "transparent"}`, color: isTracker ? "#e0e6f0" : "#5a6880" }}>
               <BarChart2 size={14} />
-              {!isMobile && "Tracker"}
+              <span className="hidden sm:inline">Tracker</span>
             </Link>
           </div>
         </div>

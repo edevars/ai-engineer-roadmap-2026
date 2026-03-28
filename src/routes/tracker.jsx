@@ -5,10 +5,8 @@ import { BarChart2, CalendarDays, Map, Check, X } from "lucide-react";
 import { roadmapData } from "../data/roadmap-data";
 import { AREA_META } from "../data/area-meta";
 import { calendarWeek } from "../data/calendar-data";
-import { useIsMobile } from "../hooks/use-is-mobile";
 
 const TrackerPage = () => {
-  const isMobile = useIsMobile();
   const [view, setView] = useState("weekly");
   const [weekChecked, setWeekChecked] = useState({});
   const [phaseChecked, setPhaseChecked] = useState({});
@@ -25,64 +23,57 @@ const TrackerPage = () => {
 
   // ── Total helpers ──
   const togglePhase = (key) => setPhaseChecked(p => ({ ...p, [key]: !p[key] }));
-  const allPhases = roadmapData.flatMap(area => area.phases.map((ph, pi) => ({ areaId: area.id, phaseIdx: pi, key: `${area.id}-${pi}` })));
+  const allPhases = roadmapData.flatMap(area => area.phases.map((_, pi) => ({ areaId: area.id, phaseIdx: pi, key: `${area.id}-${pi}` })));
   const totalPhases = allPhases.length;
   const totalDonePhases = allPhases.filter(p => phaseChecked[p.key]).length;
   const totalPct = Math.round((totalDonePhases / totalPhases) * 100);
 
-  const subBtnStyle = (active) => ({
-    display: "flex", alignItems: "center", gap: "6px",
-    padding: isMobile ? "7px 14px" : "8px 20px",
-    background: active ? "rgba(167,139,250,0.15)" : "rgba(255,255,255,0.04)",
-    border: `1px solid ${active ? "rgba(167,139,250,0.5)" : "rgba(255,255,255,0.08)"}`,
-    borderRadius: "8px", color: active ? "#a78bfa" : "#5a6880",
-    fontSize: isMobile ? "12px" : "15px", fontWeight: active ? 700 : 400,
-    cursor: "pointer", fontFamily: "'DM Sans', system-ui, sans-serif",
-    whiteSpace: "nowrap",
-  });
-
   return (
-    <div style={{ minHeight: "60vh", padding: isMobile ? "24px 16px 60px" : "36px 40px 60px", maxWidth: "960px", margin: "0 auto" }}>
+    <div className="min-h-[60vh] py-6 px-4 pb-[60px] sm:py-9 sm:px-10 sm:pb-[60px] max-w-[960px] mx-auto">
 
       {/* ── Tracker header ── */}
-      <div style={{ marginBottom: "28px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginBottom: "20px" }}>
+      <div className="mb-7">
+        <div className="flex items-start justify-between flex-wrap gap-3 mb-5">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+            <div className="flex items-center gap-2 mb-1">
               <BarChart2 size={22} style={{ color: "#a78bfa" }} />
-              <h2 style={{ fontSize: isMobile ? "20px" : "28px", fontWeight: 700, color: "#e0e6f0" }}>Progress Tracker</h2>
+              <h2 className="text-xl sm:text-[28px] font-bold" style={{ color: "#e0e6f0" }}>Progress Tracker</h2>
             </div>
-            <p style={{ color: "#5a6880", fontSize: isMobile ? "13px" : "15px", marginLeft: "30px" }}>Seguimiento semanal y total del roadmap</p>
+            <p className="text-[13px] sm:text-[15px] ml-[30px]" style={{ color: "#5a6880" }}>Seguimiento semanal y total del roadmap</p>
           </div>
           {/* Sub-view switcher */}
-          <div style={{ display: "flex", gap: "8px" }}>
-            <button className="nav-btn" style={subBtnStyle(view === "weekly")} onClick={() => setView("weekly")}>
+          <div className="flex gap-2">
+            <button className={`nav-btn flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-5 rounded-lg cursor-pointer font-sans whitespace-nowrap text-xs sm:text-[15px] ${view === "weekly" ? "font-bold" : "font-normal"}`}
+              style={{ background: view === "weekly" ? "rgba(167,139,250,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${view === "weekly" ? "rgba(167,139,250,0.5)" : "rgba(255,255,255,0.08)"}`, color: view === "weekly" ? "#a78bfa" : "#5a6880" }}
+              onClick={() => setView("weekly")}>
               <CalendarDays size={13} /> Esta semana
             </button>
-            <button className="nav-btn" style={subBtnStyle(view === "total")} onClick={() => setView("total")}>
+            <button className={`nav-btn flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-5 rounded-lg cursor-pointer font-sans whitespace-nowrap text-xs sm:text-[15px] ${view === "total" ? "font-bold" : "font-normal"}`}
+              style={{ background: view === "total" ? "rgba(167,139,250,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${view === "total" ? "rgba(167,139,250,0.5)" : "rgba(255,255,255,0.08)"}`, color: view === "total" ? "#a78bfa" : "#5a6880" }}
+              onClick={() => setView("total")}>
               <Map size={13} /> Total roadmap
             </button>
           </div>
         </div>
 
         {/* Master progress bar — always visible */}
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "10px" }}>
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "12px", padding: "14px 18px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-              <span style={{ color: "#7a8898", fontSize: isMobile ? "12px" : "14px", display:"flex", alignItems:"center", gap:"5px" }}><CalendarDays size={isMobile ? 12 : 14}/> Esta semana</span>
-              <span style={{ color: "#e0e6f0", fontSize: isMobile ? "12px" : "14px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{weekDone}/{totalWeekBlocks} · {weekPct}%</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="rounded-xl p-3.5 px-[18px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+            <div className="flex justify-between mb-2">
+              <span className="flex items-center gap-[5px] text-xs sm:text-sm" style={{ color: "#7a8898" }}><CalendarDays size={14} /> Esta semana</span>
+              <span className="text-xs sm:text-sm font-bold font-mono" style={{ color: "#e0e6f0" }}>{weekDone}/{totalWeekBlocks} · {weekPct}%</span>
             </div>
-            <div style={{ height: "6px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${weekPct}%`, background: "linear-gradient(90deg,#7C3AED,#00D4FF)", borderRadius: "3px", transition: "width 0.4s" }} />
+            <div className="h-1.5 rounded-sm overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+              <div className="h-full rounded-sm transition-[width] duration-400" style={{ width: `${weekPct}%`, background: "linear-gradient(90deg,#7C3AED,#00D4FF)" }} />
             </div>
           </div>
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "12px", padding: "14px 18px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-              <span style={{ color: "#7a8898", fontSize: isMobile ? "12px" : "14px", display:"flex", alignItems:"center", gap:"5px" }}><Map size={isMobile ? 12 : 14}/> Total roadmap</span>
-              <span style={{ color: "#e0e6f0", fontSize: isMobile ? "12px" : "14px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{totalDonePhases}/{totalPhases} fases · {totalPct}%</span>
+          <div className="rounded-xl p-3.5 px-[18px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+            <div className="flex justify-between mb-2">
+              <span className="flex items-center gap-[5px] text-xs sm:text-sm" style={{ color: "#7a8898" }}><Map size={14} /> Total roadmap</span>
+              <span className="text-xs sm:text-sm font-bold font-mono" style={{ color: "#e0e6f0" }}>{totalDonePhases}/{totalPhases} fases · {totalPct}%</span>
             </div>
-            <div style={{ height: "6px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${totalPct}%`, background: "linear-gradient(90deg,#FF6B35,#FFB800)", borderRadius: "3px", transition: "width 0.4s" }} />
+            <div className="h-1.5 rounded-sm overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+              <div className="h-full rounded-sm transition-[width] duration-400" style={{ width: `${totalPct}%`, background: "linear-gradient(90deg,#FF6B35,#FFB800)" }} />
             </div>
           </div>
         </div>
@@ -94,65 +85,65 @@ const TrackerPage = () => {
       {view === "weekly" && (
         <div>
           {/* Legend + total hours */}
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "20px", alignItems: "center" }}>
+          <div className="flex gap-2 flex-wrap mb-5 items-center">
             {Object.entries(hoursPerArea).map(([id, mins]) => {
               const m = AREA_META[id];
               return (
-                <div key={id} style={{ display: "flex", alignItems: "center", gap: "4px", padding: "3px 9px", background: m.color + "14", border: `1px solid ${m.color}30`, borderRadius: "20px" }}>
+                <div key={id} className="flex items-center gap-1 py-[3px] px-[9px] rounded-full" style={{ background: m.color + "14", border: `1px solid ${m.color}30` }}>
                   <m.IconC size={10} style={{ color: m.color, flexShrink: 0 }} />
-                  <span style={{ color: m.color, fontSize: isMobile ? "10px" : "12px", fontWeight: 600 }}>{m.label}</span>
-                  <span style={{ color: "#4a5060", fontSize: isMobile ? "10px" : "12px" }}>{Math.floor(mins/60) > 0 ? `${Math.floor(mins/60)}h` : ""}{mins%60 > 0 ? `${mins%60}m` : ""}</span>
+                  <span className="text-[10px] sm:text-xs font-semibold" style={{ color: m.color }}>{m.label}</span>
+                  <span className="text-[10px] sm:text-xs" style={{ color: "#4a5060" }}>{Math.floor(mins/60) > 0 ? `${Math.floor(mins/60)}h` : ""}{mins%60 > 0 ? `${mins%60}m` : ""}</span>
                 </div>
               );
             })}
-            <span style={{ color: "#3a4a5a", fontSize: isMobile ? "11px" : "13px", fontFamily: "'Space Mono',monospace", marginLeft: "auto" }}>{Math.floor(totalWeekMin/60)}h {totalWeekMin%60}m / semana</span>
+            <span className="text-[11px] sm:text-[13px] font-mono ml-auto" style={{ color: "#3a4a5a" }}>{Math.floor(totalWeekMin/60)}h {totalWeekMin%60}m / semana</span>
           </div>
 
           {/* 7-day grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: isMobile ? "6px" : "10px", marginBottom: "16px" }}>
+          <div className="grid grid-cols-7 gap-1.5 sm:gap-2.5 mb-4">
             {calendarWeek.map((day, di) => {
               const dayDone = day.blocks.every((_, bi) => weekChecked[`${di}-${bi}`]);
               const isOpen = activeDay === di;
               return (
-                <div key={di} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                <div key={di} className="flex flex-col gap-[5px]">
                   {/* 1:1 square */}
-                  <div onClick={() => setActiveDay(isOpen ? null : di)} className="day-square" style={{
-                    position: "relative", width: "100%", paddingBottom: "100%",
-                    borderRadius: isMobile ? "8px" : "12px", cursor: "pointer",
-                    background: dayDone ? "rgba(0,200,150,0.12)" : isOpen ? "rgba(167,139,250,0.1)" : "rgba(255,255,255,0.03)",
-                    border: dayDone ? "2px solid rgba(0,200,150,0.45)" : isOpen ? "2px solid rgba(167,139,250,0.55)" : "1px solid rgba(255,255,255,0.07)",
-                  }}>
-                    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: isMobile ? "3px" : "6px", padding: isMobile ? "4px" : "8px" }}>
-                      <span style={{ color: dayDone ? "#00c896" : isOpen ? "#a78bfa" : "#6a7888", fontSize: isMobile ? "9px" : "13px", fontWeight: 700, fontFamily: "'Space Mono',monospace", textTransform: "uppercase", letterSpacing: "0.05em" }}>{day.shortDay}</span>
+                  <div onClick={() => setActiveDay(isOpen ? null : di)} className="day-square relative w-full pb-[100%] rounded-lg sm:rounded-xl cursor-pointer"
+                    style={{
+                      background: dayDone ? "rgba(0,200,150,0.12)" : isOpen ? "rgba(167,139,250,0.1)" : "rgba(255,255,255,0.03)",
+                      border: dayDone ? "2px solid rgba(0,200,150,0.45)" : isOpen ? "2px solid rgba(167,139,250,0.55)" : "1px solid rgba(255,255,255,0.07)",
+                    }}>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-[3px] sm:gap-1.5 p-1 sm:p-2">
+                      <span className="text-[9px] sm:text-[13px] font-bold font-mono uppercase tracking-wide" style={{ color: dayDone ? "#00c896" : isOpen ? "#a78bfa" : "#6a7888" }}>{day.shortDay}</span>
                       {/* Color dots */}
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "2px", justifyContent: "center" }}>
+                      <div className="flex flex-wrap gap-0.5 justify-center">
                         {day.blocks.map((b, bi) => {
                           const m = AREA_META[b.area];
                           const done = !!weekChecked[`${di}-${bi}`];
-                          return <div key={bi} style={{ width: isMobile ? "6px" : "8px", height: isMobile ? "6px" : "8px", borderRadius: "2px", background: done ? m.color : m.color + "40", border: `1px solid ${done ? m.color : m.color + "60"}`, transition: "background-color 0.2s" }} />;
+                          return <div key={bi} className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-sm transition-colors duration-200" style={{ background: done ? m.color : m.color + "40", border: `1px solid ${done ? m.color : m.color + "60"}` }} />;
                         })}
                       </div>
                       {dayDone
-                        ? <span style={{ color: "#00c896", fontSize: isMobile ? "13px" : "19px" }}>✓</span>
-                        : <span style={{ color: "#3a4050", fontSize: isMobile ? "8px" : "11px", fontFamily: "'Space Mono',monospace" }}>{Math.floor(day.totalMin/60)}h{day.totalMin%60 > 0 ? `${day.totalMin%60}m` : ""}</span>
+                        ? <span className="text-[13px] sm:text-[19px]" style={{ color: "#00c896" }}>✓</span>
+                        : <span className="text-[8px] sm:text-[11px] font-mono" style={{ color: "#3a4050" }}>{Math.floor(day.totalMin/60)}h{day.totalMin%60 > 0 ? `${day.totalMin%60}m` : ""}</span>
                       }
                     </div>
                   </div>
 
-                  {/* Task chips — desktop */}
-                  {!isMobile && day.blocks.map((b, bi) => {
+                  {/* Task chips — desktop only */}
+                  {day.blocks.map((b, bi) => {
                     const m = AREA_META[b.area];
                     const done = !!weekChecked[`${di}-${bi}`];
                     return (
-                      <div key={bi} onClick={() => toggleWeek(`${di}-${bi}`)} className="task-chip" style={{ display: "flex", alignItems: "center", gap: "4px", padding: "4px 7px", borderRadius: "6px", cursor: "pointer", background: done ? m.color + "18" : "rgba(255,255,255,0.02)", border: `1px solid ${done ? m.color + "40" : "rgba(255,255,255,0.05)"}` }}
+                      <div key={bi} onClick={() => toggleWeek(`${di}-${bi}`)} className="task-chip hidden sm:flex items-center gap-1 py-1 px-[7px] rounded-md cursor-pointer"
+                        style={{ background: done ? m.color + "18" : "rgba(255,255,255,0.02)", border: `1px solid ${done ? m.color + "40" : "rgba(255,255,255,0.05)"}` }}
                         onMouseEnter={e => e.currentTarget.style.background = done ? m.color + "25" : "rgba(255,255,255,0.05)"}
                         onMouseLeave={e => e.currentTarget.style.background = done ? m.color + "18" : "rgba(255,255,255,0.02)"}
                       >
-                        <div style={{ width: "9px", height: "9px", borderRadius: "2px", flexShrink: 0, background: done ? m.color : "transparent", border: `1.5px solid ${done ? m.color : "rgba(255,255,255,0.2)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div className="w-[9px] h-[9px] rounded-sm shrink-0 flex items-center justify-center" style={{ background: done ? m.color : "transparent", border: `1.5px solid ${done ? m.color : "rgba(255,255,255,0.2)"}` }}>
                           {done && <Check size={6} strokeWidth={3} style={{ color: "#000" }} />}
                         </div>
                         <m.IconC size={9} style={{ color: m.color, flexShrink: 0 }} />
-                        <span style={{ color: "#3a4a5a", fontSize: "11px", fontFamily: "'Space Mono',monospace" }}>{b.duration}m</span>
+                        <span className="text-[11px] font-mono" style={{ color: "#3a4a5a" }}>{b.duration}m</span>
                       </div>
                     );
                   })}
@@ -165,32 +156,32 @@ const TrackerPage = () => {
           <div className={`accordion-wrapper${activeDay !== null ? " open" : ""}`} style={{ marginBottom: "20px" }}>
             <div className="accordion-inner">
               {activeDay !== null && (
-                <div style={{ borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(167,139,250,0.3)", background: "rgba(167,139,250,0.04)" }}>
-                  <div style={{ padding: "14px 20px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <span style={{ color: "#a78bfa", fontWeight: 700, fontSize: isMobile ? "15px" : "17px", fontFamily: "'Space Mono',monospace" }}>{calendarWeek[activeDay].day}</span>
-                      <span style={{ color: "#5a6880", fontSize: isMobile ? "12px" : "14px" }}>{calendarWeek[activeDay].focus}</span>
+                <div className="rounded-[14px] overflow-hidden" style={{ border: "1px solid rgba(167,139,250,0.3)", background: "rgba(167,139,250,0.04)" }}>
+                  <div className="p-3.5 px-5 flex justify-between items-center" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-[15px] sm:text-[17px] font-bold font-mono" style={{ color: "#a78bfa" }}>{calendarWeek[activeDay].day}</span>
+                      <span className="text-xs sm:text-sm" style={{ color: "#5a6880" }}>{calendarWeek[activeDay].focus}</span>
                     </div>
-                    <button onClick={() => setActiveDay(null)} style={{ background: "none", border: "none", color: "#5a6880", cursor: "pointer", lineHeight: 1, padding: "4px", display:"flex", alignItems:"center" }}>
+                    <button onClick={() => setActiveDay(null)} className="bg-transparent border-none cursor-pointer leading-none p-1 flex items-center" style={{ color: "#5a6880" }}>
                       <X size={16} />
                     </button>
                   </div>
-                  <div style={{ padding: "12px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <div className="p-3 px-4 flex flex-col gap-2">
                     {calendarWeek[activeDay].blocks.map((block, bi) => {
                       const meta = AREA_META[block.area];
                       const key = `${activeDay}-${bi}`;
                       const done = !!weekChecked[key];
                       return (
-                        <div key={bi} onClick={() => toggleWeek(key)} style={{ display: "flex", alignItems: "flex-start", gap: "12px", padding: "12px 14px", borderRadius: "10px", cursor: "pointer", background: done ? meta.color + "12" : "rgba(255,255,255,0.03)", border: `1px solid ${done ? meta.color + "45" : "rgba(255,255,255,0.06)"}`, borderLeft: `3px solid ${done ? meta.color : "rgba(255,255,255,0.1)"}`, transition: "background-color 0.2s, border-color 0.2s" }}>
-                          <div style={{ width: "20px", height: "20px", borderRadius: "6px", flexShrink: 0, marginTop: "1px", border: `2px solid ${done ? meta.color : "rgba(255,255,255,0.2)"}`, background: done ? meta.color : "transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "background-color 0.2s, border-color 0.2s" }}>
-                            {done && <span className="check-pop" style={{ color: "#000", fontSize: "11px", fontWeight: 900 }}>✓</span>}
+                        <div key={bi} onClick={() => toggleWeek(key)} className="flex items-start gap-3 p-3 px-3.5 rounded-[10px] cursor-pointer transition-colors duration-200" style={{ background: done ? meta.color + "12" : "rgba(255,255,255,0.03)", border: `1px solid ${done ? meta.color + "45" : "rgba(255,255,255,0.06)"}`, borderLeft: `3px solid ${done ? meta.color : "rgba(255,255,255,0.1)"}` }}>
+                          <div className="w-5 h-5 rounded-md shrink-0 mt-px flex items-center justify-center transition-colors duration-200" style={{ border: `2px solid ${done ? meta.color : "rgba(255,255,255,0.2)"}`, background: done ? meta.color : "transparent" }}>
+                            {done && <span className="check-pop text-[11px] font-black" style={{ color: "#000" }}>✓</span>}
                           </div>
-                          <div style={{ flex: 1 }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "5px", flexWrap: "wrap" }}>
-                              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: meta.color + "1a", border: `1px solid ${meta.color}35`, borderRadius: "5px", padding: "2px 8px", fontSize: isMobile ? "10px" : "12px", color: meta.color, fontWeight: 700 }}>{meta.icon} {meta.label}</span>
-                              <span style={{ color: "#4a5a6a", fontSize: isMobile ? "10px" : "12px", fontFamily: "'Space Mono',monospace" }}>{block.duration} min</span>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-[7px] mb-[5px] flex-wrap">
+                              <span className="inline-flex items-center gap-1 rounded-[5px] py-0.5 px-2 text-[10px] sm:text-xs font-bold" style={{ background: meta.color + "1a", border: `1px solid ${meta.color}35`, color: meta.color }}>{meta.icon} {meta.label}</span>
+                              <span className="text-[10px] sm:text-xs font-mono" style={{ color: "#4a5a6a" }}>{block.duration} min</span>
                             </div>
-                            <p style={{ color: done ? "#4a6070" : "#c0ccd8", fontSize: isMobile ? "13px" : "15px", lineHeight: 1.55, margin: 0, textDecoration: done ? "line-through" : "none" }}>{block.label}</p>
+                            <p className={`text-[13px] sm:text-[15px] leading-relaxed m-0 ${done ? "line-through" : ""}`} style={{ color: done ? "#4a6070" : "#c0ccd8" }}>{block.label}</p>
                           </div>
                         </div>
                       );
@@ -201,24 +192,25 @@ const TrackerPage = () => {
             </div>
           </div>
 
-          {isMobile && activeDay === null && (
-            <div style={{ padding: "12px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "8px", marginBottom: "16px" }}>
-              <p style={{ color: "#4a5a6a", fontSize: "12px", textAlign: "center" }}>Toca un día para ver y marcar sus tareas</p>
+          {/* Mobile hint */}
+          <div className={`sm:hidden ${activeDay === null ? "" : "hidden"}`}>
+            <div className="p-3 rounded-lg mb-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+              <p className="text-xs text-center" style={{ color: "#4a5a6a" }}>Toca un día para ver y marcar sus tareas</p>
             </div>
-          )}
+          </div>
 
           {/* Principles */}
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4,1fr)", gap: "8px" }}>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {[
               { icon: "🔁", title: "DSA diario", body: "30 min cada día > 3h esporádicas. La consistencia construye el patrón mental." },
               { icon: "🎯", title: "Una área profunda", body: "60 min concentrado vale más que 4×15 min saltando entre temas." },
               { icon: "📝", title: "Siempre un output", body: "Cada sesión debe producir algo: diagrama, commit, notebook, ADR." },
               { icon: "⚡", title: "Regla 25 min", body: "Si LeetCode no cede en 25 min, estudia la solución. Mañana desde cero." },
             ].map((p, i) => (
-              <div key={i} className="principle-card" style={{ padding: "12px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "10px", cursor: "default" }}>
-                <span style={{ fontSize: "15px" }}>{p.icon}</span>
-                <div style={{ color: "#b0bcc8", fontSize: isMobile ? "11.5px" : "13px", fontWeight: 600, margin: "5px 0 3px" }}>{p.title}</div>
-                <div style={{ color: "#4a5a6a", fontSize: isMobile ? "11px" : "13px", lineHeight: 1.55 }}>{p.body}</div>
+              <div key={i} className="principle-card p-3 rounded-[10px] cursor-default" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                <span className="text-[15px]">{p.icon}</span>
+                <div className="text-[11.5px] sm:text-[13px] font-semibold my-[5px] mb-[3px]" style={{ color: "#b0bcc8" }}>{p.title}</div>
+                <div className="text-[11px] sm:text-[13px] leading-relaxed" style={{ color: "#4a5a6a" }}>{p.body}</div>
               </div>
             ))}
           </div>
@@ -231,7 +223,7 @@ const TrackerPage = () => {
       {view === "total" && (
         <div>
           {/* Per-area overview cards */}
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(5,1fr)", gap: "8px", marginBottom: "28px" }}>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-7">
             {roadmapData.map(area => {
               const totalPh = area.phases.length;
               const donePh = area.phases.filter((_, pi) => phaseChecked[`${area.id}-${pi}`]).length;
@@ -239,19 +231,19 @@ const TrackerPage = () => {
               const circumference = 2 * Math.PI * 22;
               const dashOffset = circumference - (pct / 100) * circumference;
               return (
-                <div key={area.id} style={{ background: area.color + "0c", border: `1px solid ${area.color}30`, borderRadius: "12px", padding: "14px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+                <div key={area.id} className="rounded-xl p-3.5 px-3 flex flex-col items-center gap-2" style={{ background: area.color + "0c", border: `1px solid ${area.color}30` }}>
                   {/* Circular progress */}
-                  <div style={{ position: "relative", width: "54px", height: "54px" }}>
+                  <div className="relative w-[54px] h-[54px]">
                     <svg width="54" height="54" style={{ transform: "rotate(-90deg)" }}>
                       <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4" />
                       <circle cx="27" cy="27" r="22" fill="none" stroke={area.color} strokeWidth="4" strokeDasharray={circumference} strokeDashoffset={dashOffset} strokeLinecap="round" style={{ transition: "stroke-dashoffset 0.5s" }} />
                     </svg>
-                    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ color: area.color, fontSize: isMobile ? "13px" : "15px", fontWeight: 700, fontFamily: "'Space Mono',monospace" }}>{pct}%</span>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[13px] sm:text-[15px] font-bold font-mono" style={{ color: area.color }}>{pct}%</span>
                     </div>
                   </div>
-                  <span style={{ color: "#dde6f0", fontSize: isMobile ? "11px" : "13px", fontWeight: 600, textAlign: "center", lineHeight: 1.3 }}>{area.title}</span>
-                  <span style={{ color: "#4a5a6a", fontSize: isMobile ? "10px" : "12px", fontFamily: "'Space Mono',monospace" }}>{donePh}/{totalPh} fases</span>
+                  <span className="text-[11px] sm:text-[13px] font-semibold text-center leading-tight" style={{ color: "#dde6f0" }}>{area.title}</span>
+                  <span className="text-[10px] sm:text-xs font-mono" style={{ color: "#4a5a6a" }}>{donePh}/{totalPh} fases</span>
                 </div>
               );
             })}
@@ -263,56 +255,55 @@ const TrackerPage = () => {
             const donePh = area.phases.filter((_, pi) => phaseChecked[`${area.id}-${pi}`]).length;
             const areaPct = Math.round((donePh / totalPh) * 100);
             return (
-              <div key={area.id} style={{ marginBottom: "16px", borderRadius: "14px", overflow: "hidden", border: `1px solid ${area.color}25`, background: "rgba(255,255,255,0.015)" }}>
+              <div key={area.id} className="mb-4 rounded-[14px] overflow-hidden" style={{ border: `1px solid ${area.color}25`, background: "rgba(255,255,255,0.015)" }}>
                 {/* Area header */}
-                <div style={{ padding: "14px 20px", background: area.color + "0a", borderBottom: `1px solid ${area.color}20`, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ fontSize: "18px" }}>{area.icon}</span>
+                <div className="p-3.5 px-5 flex items-center justify-between flex-wrap gap-2.5" style={{ background: area.color + "0a", borderBottom: `1px solid ${area.color}20` }}>
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-lg">{area.icon}</span>
                     <div>
-                      <div style={{ color: area.color, fontWeight: 700, fontSize: isMobile ? "14px" : "16px" }}>{area.title}</div>
-                      <div style={{ color: "#4a5a6a", fontSize: isMobile ? "11px" : "13px" }}>{area.period} · {area.subtitle}</div>
+                      <div className="text-sm sm:text-base font-bold" style={{ color: area.color }}>{area.title}</div>
+                      <div className="text-[11px] sm:text-[13px]" style={{ color: "#4a5a6a" }}>{area.period} · {area.subtitle}</div>
                     </div>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <div style={{ width: isMobile ? "80px" : "120px", height: "6px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: `${areaPct}%`, background: area.color, borderRadius: "3px", transition: "width 0.4s" }} />
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-20 sm:w-[120px] h-1.5 rounded-sm overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                      <div className="h-full rounded-sm transition-[width] duration-400" style={{ width: `${areaPct}%`, background: area.color }} />
                     </div>
-                    <span style={{ color: area.color, fontSize: isMobile ? "12px" : "14px", fontWeight: 700, fontFamily: "'Space Mono',monospace", minWidth: "36px", textAlign: "right" }}>{areaPct}%</span>
+                    <span className="text-xs sm:text-sm font-bold font-mono min-w-[36px] text-right" style={{ color: area.color }}>{areaPct}%</span>
                   </div>
                 </div>
 
                 {/* Phase rows */}
-                <div style={{ padding: "8px 12px" }}>
+                <div className="p-2 px-3">
                   {area.phases.map((phase, pi) => {
                     const key = `${area.id}-${pi}`;
                     const done = !!phaseChecked[key];
                     return (
-                      <div key={pi} onClick={() => togglePhase(key)} style={{
-                        display: "flex", alignItems: "flex-start", gap: "12px",
-                        padding: "10px 12px", marginBottom: pi < area.phases.length - 1 ? "4px" : "0",
-                        borderRadius: "9px", cursor: "pointer",
-                        background: done ? area.color + "10" : "rgba(255,255,255,0.02)",
-                        border: `1px solid ${done ? area.color + "40" : "rgba(255,255,255,0.04)"}`,
-                        borderLeft: `3px solid ${done ? area.color : "rgba(255,255,255,0.08)"}`,
-                        transition: "background-color 0.2s, border-color 0.2s", opacity: done ? 0.72 : 1,
-                      }}>
+                      <div key={pi} onClick={() => togglePhase(key)} className="flex items-start gap-3 p-2.5 px-3 rounded-[9px] cursor-pointer transition-colors duration-200"
+                        style={{
+                          marginBottom: pi < area.phases.length - 1 ? "4px" : "0",
+                          background: done ? area.color + "10" : "rgba(255,255,255,0.02)",
+                          border: `1px solid ${done ? area.color + "40" : "rgba(255,255,255,0.04)"}`,
+                          borderLeft: `3px solid ${done ? area.color : "rgba(255,255,255,0.08)"}`,
+                          opacity: done ? 0.72 : 1,
+                        }}>
                         {/* Checkbox */}
-                        <div style={{ width: "20px", height: "20px", borderRadius: "6px", flexShrink: 0, marginTop: "1px", border: `2px solid ${done ? area.color : "rgba(255,255,255,0.18)"}`, background: done ? area.color : "transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "background-color 0.2s, border-color 0.2s" }}>
-                          {done && <span className="check-pop" style={{ color: "#000", fontSize: "11px", fontWeight: 900 }}>✓</span>}
+                        <div className="w-5 h-5 rounded-md shrink-0 mt-px flex items-center justify-center transition-colors duration-200" style={{ border: `2px solid ${done ? area.color : "rgba(255,255,255,0.18)"}`, background: done ? area.color : "transparent" }}>
+                          {done && <span className="check-pop text-[11px] font-black" style={{ color: "#000" }}>✓</span>}
                         </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "3px", flexWrap: "wrap" }}>
-                            <span style={{ background: area.color + "22", color: area.color, border: `1px solid ${area.color}40`, borderRadius: "5px", padding: "1px 8px", fontSize: isMobile ? "10px" : "12px", fontFamily: "'Space Mono',monospace", fontWeight: 600, whiteSpace: "nowrap" }}>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-[3px] flex-wrap">
+                            <span className="rounded-[5px] py-px px-2 text-[10px] sm:text-xs font-mono font-semibold whitespace-nowrap" style={{ background: area.color + "22", color: area.color, border: `1px solid ${area.color}40` }}>
                               {phase.label}
                             </span>
                             {phase.isPremodule && (
-                              <span style={{ background: "rgba(120,180,255,0.12)", color: "#78b4ff", border: "1px solid rgba(120,180,255,0.3)", borderRadius: "5px", padding: "1px 7px", fontSize: isMobile ? "9px" : "11px", fontWeight: 700 }}>PRE-MÓDULO</span>
+                              <span className="rounded-[5px] py-px px-[7px] text-[9px] sm:text-[11px] font-bold" style={{ background: "rgba(120,180,255,0.12)", color: "#78b4ff", border: "1px solid rgba(120,180,255,0.3)" }}>PRE-MÓDULO</span>
                             )}
                           </div>
-                          <p style={{ color: done ? "#4a6070" : "#c0ccd8", fontSize: isMobile ? "12px" : "15px", fontWeight: 600, margin: "0 0 3px", textDecoration: done ? "line-through" : "none", lineHeight: 1.3 }}>
+                          <p className={`text-xs sm:text-[15px] font-semibold m-0 mb-[3px] leading-tight ${done ? "line-through" : ""}`} style={{ color: done ? "#4a6070" : "#c0ccd8" }}>
                             {phase.title}
                           </p>
-                          <p style={{ color: done ? "#3a5060" : "#5a6880", fontSize: isMobile ? "11.5px" : "13px", margin: 0, lineHeight: 1.45, textDecoration: done ? "line-through" : "none" }}>
+                          <p className={`text-[11.5px] sm:text-[13px] m-0 leading-snug ${done ? "line-through" : ""}`} style={{ color: done ? "#3a5060" : "#5a6880" }}>
                             {phase.deliverable}
                           </p>
                         </div>
@@ -324,7 +315,7 @@ const TrackerPage = () => {
             );
           })}
 
-          <div style={{ marginTop: "8px", padding: "12px 16px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "10px", color: "#4a5a6a", fontSize: isMobile ? "12px" : "14px", lineHeight: 1.6 }}>
+          <div className="mt-2 p-3 px-4 rounded-[10px] text-xs sm:text-sm leading-relaxed" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", color: "#4a5a6a" }}>
             <strong style={{ color: "#6a7888" }}>Cómo usar:</strong> Marca una fase como completada cuando hayas terminado su entregable y puedas cumplir su métrica de éxito — no antes.
           </div>
         </div>
