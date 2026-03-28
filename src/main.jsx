@@ -6,8 +6,9 @@ import "./index.css";
 import { Route as rootRoute } from "./routes/__root";
 import { Route as indexRoute } from "./routes/index";
 import { Route as trackerRoute } from "./routes/tracker";
+import { Route as cloudAwsRoute } from "./routes/cloud-aws";
 
-const routeTree = rootRoute.addChildren([indexRoute, trackerRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, trackerRoute, cloudAwsRoute]);
 
 const router = createRouter({ routeTree });
 

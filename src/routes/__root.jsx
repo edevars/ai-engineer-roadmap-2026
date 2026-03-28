@@ -1,5 +1,5 @@
 import { createRootRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { BookText, BarChart2 } from "lucide-react";
+import { BookText, BarChart2, Cloud } from "lucide-react";
 
 const RootLayout = () => {
   const { location } = useRouterState();
@@ -7,6 +7,7 @@ const RootLayout = () => {
 
   const isRoadmap = currentPath === "/";
   const isTracker = currentPath === "/tracker";
+  const isCloudAws = currentPath === "/cloud-aws";
 
   return (
     <div className="min-h-screen bg-[#0a0d12] font-sans text-[#e0e6f0]">
@@ -32,6 +33,11 @@ const RootLayout = () => {
               style={{ background: isTracker ? "rgba(167,139,250,0.18)" : "transparent", border: `1px solid ${isTracker ? "rgba(255,255,255,0.2)" : "transparent"}`, color: isTracker ? "#e0e6f0" : "#5a6880" }}>
               <BarChart2 size={14} />
               <span className="hidden sm:inline">Tracker</span>
+            </Link>
+            <Link to="/cloud-aws" className={`nav-btn flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-5 rounded-lg cursor-pointer font-sans whitespace-nowrap no-underline text-xs sm:text-[15px] ${isCloudAws ? "font-bold" : "font-medium"}`}
+              style={{ background: isCloudAws ? "rgba(255,149,0,0.18)" : "transparent", border: `1px solid ${isCloudAws ? "rgba(255,255,255,0.2)" : "transparent"}`, color: isCloudAws ? "#e0e6f0" : "#5a6880" }}>
+              <Cloud size={14} />
+              <span className="hidden sm:inline">Cloud AWS</span>
             </Link>
           </div>
         </div>
