@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0a0d12;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: #e0e6f0;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0a0d12; }
+::-webkit-scrollbar-thumb { background: #2a3040; border-radius: 3px; }
+
+/* ── Tab navigation ── */
+.tab-nav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-nav::-webkit-scrollbar { display: none; }
+
+/* ── Fade up entrance ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.3s ease-out; }
+
+/* ── Fade in (for tab content switching) ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease-out; }
+
+/* ── Accordion (grid-row trick for unknown heights) ── */
+.accordion-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease-out;
+}
+.accordion-wrapper.open {
+  grid-template-rows: 1fr;
+}
+.accordion-inner {
+  overflow: hidden;
+}
+
+/* ── Sticky header ── */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── Nav button hover ── */
+.nav-btn {
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.nav-btn:hover {
+  background-color: rgba(255,255,255,0.08) !important;
+  color: #c0ccd8 !important;
+}
+
+/* ── Area tab hover ── */
+.area-tab {
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+}
+.area-tab:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+/* ── Card hover (subtle border-glow + lift) ── */
+.card-hover {
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.card-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+/* ── Chip hover (brightness + lift) ── */
+.chip-hover {
+  transition: transform 0.15s, filter 0.15s;
+}
+.chip-hover:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.2);
+}
+
+/* ── Objective row hover ── */
+.objective-btn {
+  transition: background-color 0.2s;
+}
+.objective-btn:hover {
+  background-color: rgba(255,255,255,0.05) !important;
+}
+
+/* ── Chevron rotation ── */
+.chevron-icon {
+  transition: transform 0.2s ease-out;
+}
+.chevron-icon.open {
+  transform: rotate(90deg);
+}
+
+/* ── Resource link hover ── */
+.resource-link {
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.resource-link:hover {
+  background-color: rgba(255,255,255,0.07) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+}
+
+/* ── Phase resource toggle button ── */
+.phase-toggle-btn {
+  transition: border-color 0.2s, color 0.2s;
+}
+
+/* ── Principle card hover ── */
+.principle-card {
+  transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
+}
+.principle-card:hover {
+  border-color: rgba(255,255,255,0.12);
+  background-color: rgba(255,255,255,0.04);
+  transform: translateY(-1px);
+}
+
+/* ── Tracker day square ── */
+.day-square {
+  transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
+}
+.day-square:hover {
+  transform: scale(1.03);
+}
+
+/* ── Tracker task chip hover ── */
+.task-chip {
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+/* ── Checkbox checkmark scale entrance ── */
+@keyframes checkPop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+.check-pop {
+  animation: checkPop 0.15s ease-out;
+}
+
+/* ── Focus-visible ring for keyboard users ── */
+:focus-visible {
+  outline: 2px solid rgba(167,139,250,0.6);
+  outline-offset: 2px;
+}
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .accordion-wrapper {
+    transition: none;
+  }
+}
