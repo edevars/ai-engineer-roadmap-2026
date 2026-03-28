@@ -5,12 +5,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev       # Start Vite dev server with HMR
-npm run build     # Production build to dist/
-npm run preview   # Preview production build locally
+pnpm dev       # Start Vite dev server with HMR (roadmap-frontend)
+pnpm build     # Production build to apps/roadmap-frontend/dist/
+pnpm preview   # Preview production build locally
+pnpm dev:all   # Start all apps in parallel
 ```
 
 No test runner, linter, or formatter is configured.
+
+## Monorepo
+
+pnpm workspace monorepo. The workspace root `package.json` has no dependencies — all deps live in individual packages.
+
+```
+apps/roadmap-frontend/   # The main Vite + React app
+packages/                # Future shared libraries
+```
+
+Use `pnpm --filter @roadmap/frontend <cmd>` to target the frontend app specifically.
 
 ## Architecture
 
@@ -18,15 +30,15 @@ Static single-page app for a personal 6-month skill upgrade roadmap. Vite 6 + Re
 
 ### Routing
 
-Manual route tree in `src/main.jsx` using `createRoute` + `createRootRoute` (not `createFileRoute`, which requires a vite plugin not installed here).
+Manual route tree in `apps/roadmap-frontend/src/main.jsx` using `createRoute` + `createRootRoute` (not `createFileRoute`, which requires a vite plugin not installed here).
 
-- `src/routes/__root.jsx` — Root layout with header and page navigation (`<Outlet />`)
-- `src/routes/index.jsx` — `/` — Roadmap browser (area tabs → phase cards → expandable objectives)
-- `src/routes/tracker.jsx` — `/tracker` — Weekly calendar + total roadmap progress checklist
+- `apps/roadmap-frontend/src/routes/__root.jsx` — Root layout with header and page navigation (`<Outlet />`)
+- `apps/roadmap-frontend/src/routes/index.jsx` — `/` — Roadmap browser (area tabs → phase cards → expandable objectives)
+- `apps/roadmap-frontend/src/routes/tracker.jsx` — `/tracker` — Weekly calendar + total roadmap progress checklist
 
 ### Data layer
 
-All in `src/data/`, no database:
+All in `apps/roadmap-frontend/src/data/`, no database:
 
 - `roadmap-data.jsx` (~950 lines) — 5 learning areas, each with phases containing objectives, resources, and LeetCode problems. Also exports `AreaIcon` component.
 - `area-meta.js` — Maps area IDs → `{ color, icon, label, IconC }` used by the tracker.
@@ -34,7 +46,7 @@ All in `src/data/`, no database:
 
 ### Components
 
-`src/components/` — Small, presentational:
+`apps/roadmap-frontend/src/components/` — Small, presentational:
 - `PhaseCard` → `ObjectiveItem` → `ResourceChip` / `LCChip`
 
 ### State
@@ -43,7 +55,7 @@ All local `useState` — no Context, no Redux, no persistence (tracker checkboxe
 
 ## Styling
 
-100% inline styles via `style={}` objects. The only CSS file is `src/index.css` (reset, fonts, scrollbar, `.tab-nav`, `.fade-up` animation).
+100% inline styles via `style={}` objects. The only CSS file is `apps/roadmap-frontend/src/index.css` (reset, fonts, scrollbar, `.tab-nav`, `.fade-up` animation).
 
 Key conventions:
 - Dark theme: background `#0a0d12`, text `#e0e6f0`
@@ -59,4 +71,4 @@ Use [gitmoji](https://gitmoji.dev/) prefixes in all commit messages (e.g. `✨ A
 
 ## Language
 
-UI text is in Spanish. The `<html lang="es">` attribute is set in `index.html`.
+UI text is in Spanish. The `<html lang="es">` attribute is set in `apps/roadmap-frontend/index.html`.

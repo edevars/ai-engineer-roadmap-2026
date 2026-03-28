@@ -1,23 +1,11 @@
 {
-  "name": "roadmap",
+  "name": "roadmap-monorepo",
   "private": true,
-  "version": "1.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "pnpm --filter @roadmap/frontend dev",
+    "build": "pnpm --filter @roadmap/frontend build",
+    "preview": "pnpm --filter @roadmap/frontend preview",
+    "dev:all": "pnpm -r --parallel dev"
   },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.2.2",
-    "@tanstack/react-router": "^1",
-    "lucide-react": "^0.460",
-    "react": "^19",
-    "react-dom": "^19",
-    "tailwindcss": "^4.2.2"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4",
-    "vite": "^6"
-  }
+  "packageManager": "pnpm@10.26.2"
 }

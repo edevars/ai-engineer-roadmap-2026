@@ -15,44 +15,52 @@ A personal 6-month skill upgrade roadmap built as a static single-page app. Brow
 - [Vite 6](https://vite.dev/)
 - [TanStack Router v1](https://tanstack.com/router) (code-based routing)
 - [Lucide React](https://lucide.dev/) (icons)
+- [pnpm](https://pnpm.io/) workspace monorepo
 
-No backend — all content is hardcoded in `src/data/`.
+No backend — all content is hardcoded in `apps/roadmap-frontend/src/data/`.
 
 ## Getting Started
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Scripts
 
-| Command             | Description                      |
-| ------------------- | -------------------------------- |
-| `npm run dev`       | Start dev server with HMR        |
-| `npm run build`     | Production build to `dist/`      |
-| `npm run preview`   | Preview production build locally |
+| Command          | Description                              |
+| ---------------- | ---------------------------------------- |
+| `pnpm dev`       | Start dev server with HMR                |
+| `pnpm build`     | Production build to `apps/roadmap-frontend/dist/` |
+| `pnpm preview`   | Preview production build locally         |
+| `pnpm dev:all`   | Start all apps in parallel               |
 
 ## Project Structure
 
 ```
-src/
-├── main.jsx              # Router setup and app entry
-├── routes/
-│   ├── __root.jsx        # Root layout (header + navigation)
-│   ├── index.jsx         # / — Roadmap browser
-│   └── tracker.jsx       # /tracker — Weekly calendar + progress
-├── components/
-│   ├── PhaseCard.jsx
-│   ├── ObjectiveItem.jsx
-│   ├── ResourceChip.jsx
-│   └── LCChip.jsx
-└── data/
-    ├── roadmap-data.jsx  # Learning areas, phases, objectives
-    ├── area-meta.js      # Area colors, icons, labels
-    └── calendar-data.js  # Weekly schedule
+roadmap/
+├── apps/
+│   └── roadmap-frontend/
+│       ├── index.html
+│       ├── vite.config.js
+│       └── src/
+│           ├── main.jsx              # Router setup and app entry
+│           ├── routes/
+│           │   ├── __root.jsx        # Root layout (header + navigation)
+│           │   ├── index.jsx         # / — Roadmap browser
+│           │   └── tracker.jsx       # /tracker — Weekly calendar + progress
+│           ├── components/
+│           │   ├── PhaseCard.jsx
+│           │   ├── ObjectiveItem.jsx
+│           │   ├── ResourceChip.jsx
+│           │   └── LCChip.jsx
+│           └── data/
+│               ├── roadmap-data.jsx  # Learning areas, phases, objectives
+│               ├── area-meta.js      # Area colors, icons, labels
+│               └── calendar-data.js  # Weekly schedule
+└── packages/                         # Future shared libraries
 ```
 
 ## License
