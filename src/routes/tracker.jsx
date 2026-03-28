@@ -13,7 +13,7 @@ const TrackerPage = () => {
 
   // ── Weekly helpers ──
   const toggleWeek = (key) => setWeekChecked(p => ({ ...p, [key]: !p[key] }));
-  const [activeDay, setActiveDay] = useState(null);
+  const [activeCell, setActiveCell] = useState(null); // "di-bi" key or null
   const totalWeekBlocks = calendarWeek.reduce((s, d) => s + d.blocks.length, 0);
   const weekDone = Object.values(weekChecked).filter(Boolean).length;
   const weekPct = Math.round((weekDone / totalWeekBlocks) * 100);
@@ -82,7 +82,30 @@ const TrackerPage = () => {
       {/* ══════════════════════════════════════════════════════════
           VIEW: ESTA SEMANA
       ══════════════════════════════════════════════════════════ */}
-      {view === "weekly" && (
+      {view === "weekly" && (() => {
+        // ── Data pivot: area-centric rows ──
+        const areaIds = Object.keys(AREA_META);
+        const areaRows = areaIds.map(areaId => {
+          const meta = AREA_META[areaId];
+          const cells = calendarWeek.map((day, di) => {
+            const bi = day.blocks.findIndex(b => b.area === areaId);
+            return bi >= 0 ? { di, bi, block: day.blocks[bi], key: `${di}-${bi}` } : null;
+          });
+          const total = cells.filter(Boolean).length;
+          const done = cells.filter(c => c && weekChecked[c.key]).length;
+          return { areaId, meta, cells, total, done };
+        });
+
+        // ── Active cell detail ──
+        const activeCellData = activeCell ? (() => {
+          const [di, bi] = activeCell.split("-").map(Number);
+          const day = calendarWeek[di];
+          const block = day?.blocks[bi];
+          if (!block) return null;
+          return { di, bi, day, block, meta: AREA_META[block.area], key: activeCell };
+        })() : null;
+
+        return (
         <div>
           {/* Legend + total hours */}
           <div className="flex gap-2 flex-wrap mb-5 items-center">
@@ -99,105 +122,108 @@ const TrackerPage = () => {
             <span className="text-[11px] sm:text-[13px] font-mono ml-auto" style={{ color: "#3a4a5a" }}>{Math.floor(totalWeekMin/60)}h {totalWeekMin%60}m / semana</span>
           </div>
 
-          {/* 7-day grid */}
-          <div className="grid grid-cols-7 gap-1.5 sm:gap-2.5 mb-4">
-            {calendarWeek.map((day, di) => {
-              const dayDone = day.blocks.every((_, bi) => weekChecked[`${di}-${bi}`]);
-              const isOpen = activeDay === di;
-              return (
-                <div key={di} className="flex flex-col gap-[5px]">
-                  {/* 1:1 square */}
-                  <div onClick={() => setActiveDay(isOpen ? null : di)} className="day-square relative w-full pb-[100%] rounded-lg sm:rounded-xl cursor-pointer"
-                    style={{
-                      background: dayDone ? "rgba(0,200,150,0.12)" : isOpen ? "rgba(167,139,250,0.1)" : "rgba(255,255,255,0.03)",
-                      border: dayDone ? "2px solid rgba(0,200,150,0.45)" : isOpen ? "2px solid rgba(167,139,250,0.55)" : "1px solid rgba(255,255,255,0.07)",
-                    }}>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-[3px] sm:gap-1.5 p-1 sm:p-2">
-                      <span className="text-[9px] sm:text-[13px] font-bold font-mono uppercase tracking-wide" style={{ color: dayDone ? "#00c896" : isOpen ? "#a78bfa" : "#6a7888" }}>{day.shortDay}</span>
-                      {/* Color dots */}
-                      <div className="flex flex-wrap gap-0.5 justify-center">
-                        {day.blocks.map((b, bi) => {
-                          const m = AREA_META[b.area];
-                          const done = !!weekChecked[`${di}-${bi}`];
-                          return <div key={bi} className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-sm transition-colors duration-200" style={{ background: done ? m.color : m.color + "40", border: `1px solid ${done ? m.color : m.color + "60"}` }} />;
-                        })}
-                      </div>
-                      {dayDone
-                        ? <span className="text-[13px] sm:text-[19px]" style={{ color: "#00c896" }}>✓</span>
-                        : <span className="text-[8px] sm:text-[11px] font-mono" style={{ color: "#3a4050" }}>{Math.floor(day.totalMin/60)}h{day.totalMin%60 > 0 ? `${day.totalMin%60}m` : ""}</span>
-                      }
-                    </div>
-                  </div>
-
-                  {/* Task chips — desktop only */}
-                  {day.blocks.map((b, bi) => {
-                    const m = AREA_META[b.area];
-                    const done = !!weekChecked[`${di}-${bi}`];
-                    return (
-                      <div key={bi} onClick={() => toggleWeek(`${di}-${bi}`)} className="task-chip hidden sm:flex items-center gap-1 py-1 px-[7px] rounded-md cursor-pointer"
-                        style={{ background: done ? m.color + "18" : "rgba(255,255,255,0.02)", border: `1px solid ${done ? m.color + "40" : "rgba(255,255,255,0.05)"}` }}
-                        onMouseEnter={e => e.currentTarget.style.background = done ? m.color + "25" : "rgba(255,255,255,0.05)"}
-                        onMouseLeave={e => e.currentTarget.style.background = done ? m.color + "18" : "rgba(255,255,255,0.02)"}
-                      >
-                        <div className="w-[9px] h-[9px] rounded-sm shrink-0 flex items-center justify-center" style={{ background: done ? m.color : "transparent", border: `1.5px solid ${done ? m.color : "rgba(255,255,255,0.2)"}` }}>
-                          {done && <Check size={6} strokeWidth={3} style={{ color: "#000" }} />}
+          {/* ── Heatmap table ── */}
+          <div className="rounded-[14px] overflow-hidden mb-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              {/* Day headers */}
+              <thead>
+                <tr>
+                  <th style={{ width: "110px", padding: "10px 14px", textAlign: "left" }} className="hidden sm:table-cell" />
+                  <th style={{ width: "36px", padding: "10px 6px", textAlign: "left" }} className="sm:hidden" />
+                  {calendarWeek.map((day, di) => (
+                    <th key={di} className="text-[9px] sm:text-[11px] font-bold font-mono uppercase tracking-wider" style={{ color: "#4a5a6a", padding: "10px 0", textAlign: "center" }}>
+                      {day.shortDay}
+                    </th>
+                  ))}
+                  <th className="text-[9px] sm:text-[11px] font-mono" style={{ color: "#3a4a5a", padding: "10px 14px 10px 8px", textAlign: "right", width: "80px" }}>Progreso</th>
+                </tr>
+              </thead>
+              <tbody>
+                {areaRows.map(({ areaId, meta, cells, total, done }) => {
+                  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                  return (
+                    <tr key={areaId} style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                      {/* Area label — full on desktop */}
+                      <td className="hidden sm:table-cell" style={{ padding: "8px 14px" }}>
+                        <div className="flex items-center gap-[6px]">
+                          <meta.IconC size={13} style={{ color: meta.color, flexShrink: 0 }} />
+                          <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: meta.color }}>{meta.label}</span>
                         </div>
-                        <m.IconC size={9} style={{ color: m.color, flexShrink: 0 }} />
-                        <span className="text-[11px] font-mono" style={{ color: "#3a4a5a" }}>{b.duration}m</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Day detail panel — accordion */}
-          <div className={`accordion-wrapper${activeDay !== null ? " open" : ""}`} style={{ marginBottom: "20px" }}>
-            <div className="accordion-inner">
-              {activeDay !== null && (
-                <div className="rounded-[14px] overflow-hidden" style={{ border: "1px solid rgba(167,139,250,0.3)", background: "rgba(167,139,250,0.04)" }}>
-                  <div className="p-3.5 px-5 flex justify-between items-center" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                    <div className="flex items-center gap-2.5">
-                      <span className="text-[15px] sm:text-[17px] font-bold font-mono" style={{ color: "#a78bfa" }}>{calendarWeek[activeDay].day}</span>
-                      <span className="text-xs sm:text-sm" style={{ color: "#5a6880" }}>{calendarWeek[activeDay].focus}</span>
-                    </div>
-                    <button onClick={() => setActiveDay(null)} className="bg-transparent border-none cursor-pointer leading-none p-1 flex items-center" style={{ color: "#5a6880" }}>
-                      <X size={16} />
-                    </button>
-                  </div>
-                  <div className="p-3 px-4 flex flex-col gap-2">
-                    {calendarWeek[activeDay].blocks.map((block, bi) => {
-                      const meta = AREA_META[block.area];
-                      const key = `${activeDay}-${bi}`;
-                      const done = !!weekChecked[key];
-                      return (
-                        <div key={bi} onClick={() => toggleWeek(key)} className="flex items-start gap-3 p-3 px-3.5 rounded-[10px] cursor-pointer transition-colors duration-200" style={{ background: done ? meta.color + "12" : "rgba(255,255,255,0.03)", border: `1px solid ${done ? meta.color + "45" : "rgba(255,255,255,0.06)"}`, borderLeft: `3px solid ${done ? meta.color : "rgba(255,255,255,0.1)"}` }}>
-                          <div className="w-5 h-5 rounded-md shrink-0 mt-px flex items-center justify-center transition-colors duration-200" style={{ border: `2px solid ${done ? meta.color : "rgba(255,255,255,0.2)"}`, background: done ? meta.color : "transparent" }}>
-                            {done && <span className="check-pop text-[11px] font-black" style={{ color: "#000" }}>✓</span>}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-[7px] mb-[5px] flex-wrap">
-                              <span className="inline-flex items-center gap-1 rounded-[5px] py-0.5 px-2 text-[10px] sm:text-xs font-bold" style={{ background: meta.color + "1a", border: `1px solid ${meta.color}35`, color: meta.color }}>{meta.icon} {meta.label}</span>
-                              <span className="text-[10px] sm:text-xs font-mono" style={{ color: "#4a5a6a" }}>{block.duration} min</span>
+                      </td>
+                      {/* Area label — icon only on mobile */}
+                      <td className="sm:hidden" style={{ padding: "6px 8px" }}>
+                        <div className="flex items-center justify-center">
+                          <meta.IconC size={14} style={{ color: meta.color }} />
+                        </div>
+                      </td>
+                      {/* Day cells */}
+                      {cells.map((cell, di) => (
+                        <td key={di} style={{ padding: "6px 0", textAlign: "center" }}>
+                          {cell ? (
+                            <div
+                              className="heatmap-cell w-5 h-5 sm:w-7 sm:h-7 inline-flex items-center justify-center cursor-pointer rounded-md sm:rounded-lg"
+                              style={{
+                                background: weekChecked[cell.key] ? meta.color : "transparent",
+                                border: `2px solid ${weekChecked[cell.key] ? meta.color : meta.color + "45"}`,
+                                boxShadow: activeCell === cell.key ? `0 0 0 2px ${meta.color}60` : "none",
+                              }}
+                              onClick={() => {
+                                toggleWeek(cell.key);
+                                setActiveCell(activeCell === cell.key ? null : cell.key);
+                              }}
+                            >
+                              {weekChecked[cell.key] && <Check size={11} strokeWidth={3} style={{ color: "#000" }} />}
                             </div>
-                            <p className={`text-[13px] sm:text-[15px] leading-relaxed m-0 ${done ? "line-through" : ""}`} style={{ color: done ? "#4a6070" : "#c0ccd8" }}>{block.label}</p>
+                          ) : (
+                            <span className="inline-block text-[10px] sm:text-xs" style={{ color: "#2a3040" }}>—</span>
+                          )}
+                        </td>
+                      ))}
+                      {/* Per-area progress */}
+                      <td style={{ padding: "6px 14px 6px 8px" }}>
+                        <div className="flex flex-col items-end gap-[3px]">
+                          <span className="text-[10px] sm:text-xs font-mono font-semibold" style={{ color: meta.color }}>{done}/{total}</span>
+                          <div className="w-full max-w-[56px] h-[3px] rounded-sm overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                            <div className="h-full rounded-sm" style={{ width: `${pct}%`, background: meta.color, transition: "width 0.3s" }} />
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
 
-          {/* Mobile hint */}
-          <div className={`sm:hidden ${activeDay === null ? "" : "hidden"}`}>
-            <div className="p-3 rounded-lg mb-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
-              <p className="text-xs text-center" style={{ color: "#4a5a6a" }}>Toca un día para ver y marcar sus tareas</p>
+          {/* ── Cell detail row ── */}
+          {activeCellData && (
+            <div className="rounded-[10px] p-3 px-4 mb-4 flex items-start gap-3" style={{ background: activeCellData.meta.color + "0c", border: `1px solid ${activeCellData.meta.color}30` }}>
+              <div
+                className="w-5 h-5 rounded-md shrink-0 mt-px flex items-center justify-center cursor-pointer"
+                style={{
+                  border: `2px solid ${weekChecked[activeCellData.key] ? activeCellData.meta.color : "rgba(255,255,255,0.2)"}`,
+                  background: weekChecked[activeCellData.key] ? activeCellData.meta.color : "transparent",
+                }}
+                onClick={() => toggleWeek(activeCellData.key)}
+              >
+                {weekChecked[activeCellData.key] && <span className="check-pop text-[11px] font-black" style={{ color: "#000" }}>✓</span>}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-[7px] mb-[4px] flex-wrap">
+                  <span className="inline-flex items-center gap-1 rounded-[5px] py-0.5 px-2 text-[10px] sm:text-xs font-bold" style={{ background: activeCellData.meta.color + "1a", border: `1px solid ${activeCellData.meta.color}35`, color: activeCellData.meta.color }}>
+                    {activeCellData.meta.label}
+                  </span>
+                  <span className="text-[10px] sm:text-xs font-mono" style={{ color: "#4a5a6a" }}>{activeCellData.day.day} · {activeCellData.block.duration} min</span>
+                </div>
+                <p className={`text-[12px] sm:text-[14px] leading-relaxed m-0 ${weekChecked[activeCellData.key] ? "line-through" : ""}`} style={{ color: weekChecked[activeCellData.key] ? "#4a6070" : "#c0ccd8" }}>
+                  {activeCellData.block.label}
+                </p>
+              </div>
+              <button onClick={() => setActiveCell(null)} className="bg-transparent border-none cursor-pointer leading-none p-1 flex items-center shrink-0" style={{ color: "#5a6880" }}>
+                <X size={14} />
+              </button>
             </div>
-          </div>
+          )}
 
           {/* Principles */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -215,7 +241,8 @@ const TrackerPage = () => {
             ))}
           </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* ══════════════════════════════════════════════════════════
           VIEW: TOTAL ROADMAP

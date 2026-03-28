@@ -138,17 +138,12 @@ body {
   transform: translateY(-1px);
 }
 
-/* ── Tracker day square ── */
-.day-square {
-  transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
+/* ── Heatmap cell hover ── */
+.heatmap-cell {
+  transition: transform 0.12s, box-shadow 0.15s, background-color 0.15s, border-color 0.15s;
 }
-.day-square:hover {
-  transform: scale(1.03);
-}
-
-/* ── Tracker task chip hover ── */
-.task-chip {
-  transition: background-color 0.15s, border-color 0.15s;
+.heatmap-cell:hover {
+  transform: scale(1.15);
 }
 
 /* ── Checkbox checkmark scale entrance ── */
