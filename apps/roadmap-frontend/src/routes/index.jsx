@@ -1,47 +1,134 @@
 import { useState } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
-import { Info } from "lucide-react";
+import { Info, Cloud } from "lucide-react";
 import { roadmapData, AreaIcon } from "../data/roadmap-data";
+import { cloudAwsData, CloudAwsAreaIcon } from "../data/cloud-aws-data";
 import { PhaseCard } from "../components/PhaseCard";
+
+const AWS_COLOR = "#FF9500";
 
 const RoadmapPage = () => {
   const [active, setActive] = useState("system-design");
-  const area = roadmapData.find(a => a.id === active);
+  const [awsSub, setAwsSub] = useState("fundamentos-aws");
+
+  const isCloud = active === "cloud-aws";
+  const area = isCloud
+    ? cloudAwsData.find(a => a.id === awsSub)
+    : roadmapData.find(a => a.id === active);
+
   const freeCount  = area ? area.phases.reduce((acc, p) => acc + p.resources.filter(r => r.free).length, 0) : 0;
   const paidCount  = area ? area.phases.reduce((acc, p) => acc + p.resources.filter(r => !r.free).length, 0) : 0;
   const totalObjectives = area ? area.phases.reduce((acc, p) => acc + p.objectives.length, 0) : 0;
 
+  const totalAwsObjectives = cloudAwsData.reduce((acc, a) => acc + a.phases.reduce((a2, p) => a2 + p.objectives.length, 0), 0);
+  const totalAwsPhases = cloudAwsData.reduce((acc, a) => acc + a.phases.length, 0);
+
   return (
     <>
       {/* Area tabs */}
-      <div className="tab-nav py-3.5 px-4 sm:py-[18px] sm:px-10" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        {roadmapData.map(a => (
-          <button key={a.id} onClick={() => setActive(a.id)} className="area-tab flex items-center gap-1.5 py-2 px-3 sm:py-[9px] sm:px-4 rounded-[10px] cursor-pointer whitespace-nowrap font-sans shrink-0 text-xs sm:text-[15px]"
-            style={{
-              background: active === a.id ? a.color + "18" : "rgba(255,255,255,0.04)",
-              border: `1px solid ${active === a.id ? a.color + "55" : "rgba(255,255,255,0.08)"}`,
-              color: active === a.id ? a.color : "#7a8898",
-              fontWeight: active === a.id ? 700 : 400,
-            }}>
-            <span className="text-[13px] sm:text-[17px] flex items-center">
-              <AreaIcon id={a.id} size={15} />
-            </span>
-            <span className="sm:hidden">{a.id === "algoritmos" ? "DSA" : a.id === "ingles-tecnico" ? "Inglés" : a.title.split(" ")[0]}</span>
-            <span className="hidden sm:inline">{a.title}</span>
-          </button>
-        ))}
+      <div className="tab-nav py-3 px-4 sm:py-4 sm:px-10 gap-2 sm:gap-2.5" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        {roadmapData.map(a => {
+          const on = active === a.id;
+          return (
+            <button key={a.id} onClick={() => setActive(a.id)}
+              className="area-tab flex items-center gap-2 py-2 px-3 sm:py-2.5 sm:px-4 rounded-xl cursor-pointer whitespace-nowrap font-sans shrink-0"
+              style={{
+                background: on ? a.color + "12" : "transparent",
+                border: `1px solid ${on ? a.color + "40" : "transparent"}`,
+                boxShadow: on ? `0 0 16px ${a.color}10` : "none",
+              }}>
+              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: on ? a.color + "22" : "rgba(255,255,255,0.05)" }}>
+                <AreaIcon id={a.id} size={13} style={{ color: on ? a.color : "#5a6880" }} />
+              </div>
+              <span className={`text-xs sm:text-[14px] ${on ? "font-bold" : "font-medium"}`} style={{ color: on ? a.color : "#6a7888" }}>
+                <span className="sm:hidden">{a.id === "algoritmos" ? "DSA" : a.id === "ingles-tecnico" ? "Inglés" : a.title.split(" ")[0]}</span>
+                <span className="hidden sm:inline">{a.title}</span>
+              </span>
+              {on && <span className="hidden sm:inline text-[9px] font-mono font-bold py-0.5 px-1.5 rounded-md" style={{ background: a.color + "18", color: a.color + "AA" }}>{a.period}</span>}
+            </button>
+          );
+        })}
+
+        {/* Divider */}
+        <div className="shrink-0 self-center" style={{ width: 1, height: 24, background: "rgba(255,255,255,0.08)" }} />
+
+        {/* Cloud AWS single tab */}
+        <button onClick={() => setActive("cloud-aws")}
+          className="area-tab flex items-center gap-2 py-2 px-3 sm:py-2.5 sm:px-4 rounded-xl cursor-pointer whitespace-nowrap font-sans shrink-0"
+          style={{
+            background: isCloud ? AWS_COLOR + "12" : "transparent",
+            border: `1px solid ${isCloud ? AWS_COLOR + "40" : "transparent"}`,
+            boxShadow: isCloud ? `0 0 16px ${AWS_COLOR}10` : "none",
+          }}>
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: isCloud ? AWS_COLOR + "22" : "rgba(255,255,255,0.05)" }}>
+            <Cloud size={13} style={{ color: isCloud ? AWS_COLOR : "#5a6880" }} />
+          </div>
+          <span className={`text-xs sm:text-[14px] ${isCloud ? "font-bold" : "font-medium"}`} style={{ color: isCloud ? AWS_COLOR : "#6a7888" }}>
+            <span className="sm:hidden">Cloud</span>
+            <span className="hidden sm:inline">Cloud (AWS)</span>
+          </span>
+        </button>
       </div>
+
+      {/* ── Cloud AWS: optional description + sub-category cards ── */}
+      {isCloud && (
+        <div className="fade-in px-4 sm:px-10 pt-5 sm:pt-7 max-w-[860px] mx-auto">
+          {/* Header */}
+          <div className="flex items-center gap-2.5 mb-1.5">
+            <Cloud size={20} style={{ color: AWS_COLOR }} />
+            <h2 className="text-lg sm:text-[22px] font-bold m-0" style={{ color: AWS_COLOR }}>Cloud (AWS)</h2>
+            <span className="text-[9px] sm:text-[10px] font-bold font-mono uppercase tracking-wider py-0.5 px-2 rounded" style={{ background: AWS_COLOR + "15", border: `1px solid ${AWS_COLOR}35`, color: AWS_COLOR }}>
+              Opcional
+            </span>
+          </div>
+          <p className="text-[12px] sm:text-[13px] leading-relaxed mb-4 ml-[30px] sm:ml-[32px]" style={{ color: "#5a6880" }}>
+            Roadmap independiente del plan principal — {totalAwsPhases} fases, {totalAwsObjectives} temas. Actívalo si tu carrera lo requiere.
+          </p>
+
+          {/* Sub-category cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5 mb-6">
+            {cloudAwsData.map(a => {
+              const selected = awsSub === a.id;
+              const topics = a.phases.reduce((acc, p) => acc + p.objectives.length, 0);
+              return (
+                <button key={a.id} onClick={() => setAwsSub(a.id)}
+                  className="card-hover rounded-[10px] p-3 sm:p-3.5 cursor-pointer text-left font-sans"
+                  style={{
+                    background: selected ? a.color + "14" : "rgba(255,255,255,0.02)",
+                    border: `1px solid ${selected ? a.color + "50" : "rgba(255,255,255,0.06)"}`,
+                    boxShadow: selected ? `0 0 12px ${a.color}12` : "none",
+                  }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: selected ? a.color + "22" : "rgba(255,255,255,0.04)" }}>
+                      <CloudAwsAreaIcon id={a.id} size={14} style={{ color: selected ? a.color : "#5a6880" }} />
+                    </div>
+                    {selected && <div className="w-1.5 h-1.5 rounded-full ml-auto shrink-0" style={{ background: a.color }} />}
+                  </div>
+                  <div className="text-[11px] sm:text-[12px] font-semibold leading-tight mb-1" style={{ color: selected ? a.color : "#8898aa" }}>
+                    {a.title}
+                  </div>
+                  <div className="text-[9px] sm:text-[10px] font-mono" style={{ color: "#4a5a6a" }}>
+                    {a.period} · {topics} temas
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Area content — keyed for fade-in on switch */}
       {area && (
-        <div key={active} className="fade-in py-5 px-4 pb-12 sm:py-7 sm:px-10 sm:pb-12 max-w-[860px] mx-auto">
+        <div key={isCloud ? awsSub : active} className={`fade-in px-4 pb-12 sm:px-10 sm:pb-12 max-w-[860px] mx-auto ${isCloud ? "pt-0" : "py-5 sm:py-7"}`}>
           <div className="mb-5">
             <div className="flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2.5 mb-1">
                   <span className="text-[22px] sm:text-[32px] flex items-center">
-                    <AreaIcon id={area.id} size={26} style={{ color: area.color }} />
+                    {isCloud
+                      ? <CloudAwsAreaIcon id={area.id} size={26} style={{ color: area.color }} />
+                      : <AreaIcon id={area.id} size={26} style={{ color: area.color }} />}
                   </span>
                   <h2 className="text-lg sm:text-[26px] font-bold" style={{ color: area.color }}>{area.title}</h2>
                 </div>
@@ -82,6 +169,6 @@ const RoadmapPage = () => {
 
 export const Route = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/",
+  path: "/roadmap",
   component: RoadmapPage,
 });

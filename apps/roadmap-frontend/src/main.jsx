@@ -5,11 +5,10 @@ import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 
 import { Route as rootRoute } from "./routes/__root";
-import { Route as indexRoute } from "./routes/index";
+import { Route as homeRoute } from "./routes/home";
+import { Route as roadmapRoute } from "./routes/index";
 import { Route as trackerRoute } from "./routes/tracker";
-import { Route as cloudAwsRoute } from "./routes/cloud-aws";
-
-const routeTree = rootRoute.addChildren([indexRoute, trackerRoute, cloudAwsRoute]);
+const routeTree = rootRoute.addChildren([homeRoute, roadmapRoute, trackerRoute]);
 
 const router = createRouter({ routeTree });
 
