@@ -1,4 +1,4 @@
-import { Layers, Activity, Cpu, Code2, Globe } from "lucide-react";
+import { Layers, Activity, Cpu, Code2, Globe, Wand2 } from "lucide-react";
 
 export const AREA_META = {
   "system-design":  { color: "#00D4FF", label: "System Design",  IconC: Layers },
@@ -6,4 +6,5 @@ export const AREA_META = {
   "ai-engineering": { color: "#7C3AED", label: "AI Engineering", IconC: Cpu },
   "algoritmos":     { color: "#FF6B35", label: "DSA / LeetCode", IconC: Code2 },
   "ingles-tecnico": { color: "#00C896", label: "Inglés Técnico C1", IconC: Globe },
+  "ai-code-tools": { color: "#E91E63", label: "IA para Código", IconC: Wand2 },
 };

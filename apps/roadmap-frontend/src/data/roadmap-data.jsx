@@ -1,4 +1,4 @@
-import { Layers, Activity, Cpu, Code2, Globe } from "lucide-react";
+import { Layers, Activity, Cpu, Code2, Globe, Wand2 } from "lucide-react";
 
 const AREA_ICON_MAP = {
   "system-design":  Layers,
@@ -6,6 +6,7 @@ const AREA_ICON_MAP = {
   "ai-engineering": Cpu,
   "algoritmos":     Code2,
   "ingles-tecnico": Globe,
+  "ai-code-tools": Wand2,
 };
 const AreaIcon = ({ id, size = 15, style = {} }) => {
   const Icon = AREA_ICON_MAP[id];
@@ -943,6 +944,211 @@ const roadmapData = [
             why: "El conocimiento técnico y el desempeño en una entrevista son habilidades diferentes. Una entrevista técnica tiene una estructura: clarificar el problema (5 min), proponer un enfoque (5 min), codificar (20 min), testear y optimizar (10 min), discutir trade-offs (5 min). Practicar este formato con tiempo real y un peer que observe y da feedback — no solo resolver el problema solo — es lo que calibra tu desempeño real bajo presión.",
             resource: { name: "Pramp — Free technical interview practice", url: "https://www.pramp.com", free: true },
             miniDeliverable: "4 simulaciones de entrevista técnica de 45 min grabadas o con peer. Para cada una: documentar el problema, la solución propuesta, el feedback recibido, y el plan de mejora específico para la siguiente.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "ai-code-tools",
+    icon: "⚡",
+    color: "#E91E63",
+    title: "Herramientas IA para Código",
+    subtitle: "Dominar asistentes de IA, MCP y flujos agénticos para multiplicar tu productividad",
+    period: "4 meses",
+    periodLabel: "El primer mes es dominar prompt engineering: las técnicas que separan un usuario casual de uno que obtiene resultados predecibles. El segundo mes es configurar y comparar los asistentes de IA. El tercer mes es dominar MCP y flujos avanzados. El cuarto mes es construir workflows agénticos reales y medir el impacto en tu productividad.",
+    phases: [
+      {
+        label: "Mes 1",
+        title: "Prompt Engineering — Técnicas Avanzadas para Resultados Predecibles",
+        deliverable: "Biblioteca personal de 20+ prompts testeados y documentados + sistema de evaluación de prompts + guía interna de prompt engineering para tu equipo.",
+        metric: "Puedes diseñar un prompt que produce el resultado esperado en el primer intento para el 80% de las tareas habituales. Sabes elegir entre zero-shot, few-shot y chain-of-thought según el problema. Tus prompts incluyen mecanismos de validación del output.",
+        resources: [
+          { name: "Anthropic — Prompt Engineering Guide", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering", free: true },
+          { name: "OpenAI — Prompt Engineering Best Practices", url: "https://platform.openai.com/docs/guides/prompt-engineering", free: true },
+          { name: "Anthropic Cookbook — Prompt Examples", url: "https://github.com/anthropics/anthropic-cookbook", free: true },
+          { name: "Brex Prompt Engineering Guide", url: "https://github.com/brexhq/prompt-engineering", free: true },
+        ],
+        objectives: [
+          {
+            topic: "Zero-shot, few-shot y chain-of-thought: cuándo usar cada técnica",
+            why: "Estas tres técnicas son los fundamentos de todo prompt engineering. Zero-shot funciona para tareas simples y bien definidas donde el modelo ya tiene conocimiento suficiente. Few-shot añade ejemplos que guían el formato y el razonamiento — es la técnica más poderosa para tareas con formato específico. Chain-of-thought (CoT) le pide al modelo que razone paso a paso antes de responder, lo que mejora dramáticamente la precisión en problemas de lógica, matemáticas y análisis multi-paso. Saber cuándo usar cada una es la diferencia entre prompts que fallan aleatoriamente y prompts que producen resultados consistentes.",
+            resource: { name: "Anthropic — Prompt Engineering: Chain of Thought", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought", free: true },
+            miniDeliverable: "Documento con 9 ejemplos (3 por técnica) aplicados a tareas reales de tu trabajo: generación de código, análisis de bugs, y escritura de documentación. Para cada ejemplo: prompt usado, output obtenido, y evaluación de por qué esa técnica es la correcta para ese caso. Incluir 3 contra-ejemplos donde usar la técnica incorrecta produjo un resultado inferior.",
+          },
+          {
+            topic: "System prompts y personas: diseñar instrucciones de sistema que controlan el comportamiento",
+            why: "El system prompt es el mecanismo más poderoso para controlar el comportamiento del modelo a largo plazo. Define el rol, las restricciones, el formato de respuesta, y las guardrails que el modelo debe seguir en toda la conversación. Un system prompt bien diseñado puede transformar un modelo genérico en un asistente especializado: un reviewer que sigue tu guía de estilo, un arquitecto que razona con tus patrones de diseño, o un tutor que explica al nivel de detalle correcto. Las personas (roles) no son cosméticas — cambian fundamentalmente cómo el modelo procesa y responde.",
+            resource: { name: "Anthropic — System Prompts Guide", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts", free: true },
+            miniDeliverable: "3 system prompts completos y testeados para roles distintos: (1) code reviewer estricto con checklist de tu equipo, (2) arquitecto de sistemas que razona con trade-offs explícitos, (3) asistente de debugging que sigue un protocolo de diagnóstico. Para cada uno: el prompt completo, 3 conversaciones de ejemplo que demuestren que el comportamiento es consistente, y documentación de iteraciones realizadas hasta llegar a la versión final.",
+          },
+          {
+            topic: "Structured outputs: forzar JSON, XML y schemas en las respuestas",
+            why: "Para integrar LLMs en pipelines de software, el output debe ser parseaable de forma confiable. Las técnicas incluyen: pedir JSON explícitamente con un schema de ejemplo, usar XML tags para delimitar secciones, especificar el schema exacto con tipos y campos requeridos, y usar prefilling (empezar la respuesta del asistente con el inicio del JSON). Sin structured outputs, estás haciendo parsing con regex sobre texto libre — frágil y propenso a errores. Con ellos, el LLM se convierte en una función con input y output definidos que puedes integrar en cualquier sistema.",
+            resource: { name: "Anthropic — Structured Output with Tool Use", url: "https://docs.anthropic.com/en/docs/build-with-claude/tool-use", free: true },
+            miniDeliverable: "3 prompts que producen structured output confiable: (1) extractor de información que devuelve JSON con schema específico, (2) clasificador multi-label que devuelve array de categorías con scores, (3) generador de código que devuelve bloques delimitados con metadata. Para cada uno: schema esperado, prompt usado, 5 ejecuciones con inputs variados, y tasa de éxito en parsing automático.",
+          },
+          {
+            topic: "Prompt chains y decomposición: dividir tareas complejas en pasos verificables",
+            why: "Las tareas complejas que fallan en un solo prompt suelen funcionar cuando se descomponen en una cadena de prompts más simples. Cada paso produce un output intermedio que puedes verificar antes de pasarlo al siguiente. Ejemplo: en vez de pedir 'analiza este código y sugiere mejoras', divides en: (1) extraer la lista de funciones y sus responsabilidades, (2) identificar funciones que violan SRP, (3) proponer refactoring para cada una. La cadena es más lenta pero dramáticamente más confiable — y cada paso intermedio es auditable.",
+            resource: { name: "Anthropic Cookbook — Prompt Chaining Examples", url: "https://github.com/anthropics/anthropic-cookbook", free: true },
+            miniDeliverable: "2 prompt chains completas implementadas como scripts o notebooks: (1) análisis de codebase (inventario → detección de problemas → plan de refactoring → implementación paso a paso), (2) generación de documentación (extraer API → generar descripciones → formatear como docs → revisar consistencia). Para cada chain: diagrama de flujo, prompts de cada paso, outputs intermedios, y comparación con el resultado de un solo prompt monolítico.",
+          },
+          {
+            topic: "Evaluación y testing de prompts: métricas, iteración y regression testing",
+            why: "Un prompt sin evaluación es como código sin tests — funciona hasta que no. Las métricas de evaluación incluyen: tasa de éxito (porcentaje de respuestas correctas), consistencia (misma pregunta = misma calidad de respuesta), cobertura (funciona con inputs variados), y safety (no produce outputs dañinos o incorrectos en edge cases). El proceso de iteración es: definir criterios de éxito → crear dataset de evaluación → ejecutar → medir → ajustar → repetir. Los regression tests aseguran que mejorar un caso no rompe otros — exactamente como en software.",
+            resource: { name: "Anthropic — Evaluating Prompts", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview", free: true },
+            miniDeliverable: "Framework de evaluación aplicado a 2 prompts de tu biblioteca: dataset de 10+ inputs de prueba con output esperado para cada uno, script que ejecuta el prompt contra todos los inputs y mide tasa de éxito, documentación de 3 iteraciones de mejora con métricas antes y después de cada cambio. Mínimo 80% de tasa de éxito en la versión final.",
+          },
+          {
+            topic: "Biblioteca de prompts: construir un sistema reutilizable para tu equipo",
+            why: "Una biblioteca de prompts transforma conocimiento individual en capacidad de equipo. En vez de que cada persona reinvente prompts para tareas comunes (code review, generación de tests, debugging, documentación), la biblioteca provee prompts testeados con instrucciones de uso y métricas de efectividad. El formato importa: cada prompt necesita un nombre descriptivo, caso de uso, variables de input, ejemplo de output esperado, y notas sobre limitaciones conocidas. Una buena biblioteca se mantiene viva — se actualizan los prompts cuando cambian los modelos o las necesidades.",
+            resource: { name: "Brex — Prompt Engineering Guide", url: "https://github.com/brexhq/prompt-engineering", free: true },
+            miniDeliverable: "Repositorio con biblioteca de 20+ prompts organizados por categoría (desarrollo, review, debugging, documentación, análisis). Cada prompt con: nombre, descripción, variables, ejemplo de uso, output esperado, y score de efectividad basado en testing real. README con guía de contribución y proceso de actualización. Compartir con tu equipo y documentar feedback recibido.",
+          },
+        ],
+      },
+      {
+        label: "Mes 2",
+        title: "Fundamentos — Asistentes IA, Setup y Prompt Engineering",
+        deliverable: "Entorno configurado con al menos 2 asistentes IA activos + documento comparativo de herramientas + repositorio con 10+ ejemplos de prompts efectivos para código.",
+        metric: "Puedes explicar las diferencias funcionales entre Copilot, Cursor, Claude Code y Windsurf. Usas prompt engineering para obtener resultados predecibles en generación, refactoring y debugging.",
+        resources: [
+          { name: "GitHub Copilot Docs", url: "https://docs.github.com/en/copilot", free: true },
+          { name: "Cursor Documentation", url: "https://docs.cursor.com", free: true },
+          { name: "Claude Code — Anthropic Docs", url: "https://docs.anthropic.com/en/docs/claude-code", free: true },
+          { name: "Prompt Engineering Guide — Anthropic", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering", free: true },
+        ],
+        objectives: [
+          {
+            topic: "Qué son los asistentes de IA para código y cómo funcionan internamente",
+            why: "Antes de usar cualquier herramienta de IA para código necesitas entender el modelo mental: cómo procesan contexto, qué es una ventana de contexto, por qué alucinan, y cuáles son sus limitaciones reales. Sin este fundamento, vas a confiar ciegamente en sugerencias incorrectas o descartar la herramienta por frustraciones evitables. Entender la diferencia entre completación inline, chat, y agentes es crítico para elegir la herramienta correcta para cada tarea.",
+            resource: { name: "Anthropic — Introduction to Claude", url: "https://docs.anthropic.com/en/docs/intro-to-claude", free: true },
+            miniDeliverable: "Documento de 500 palabras explicando: qué es un LLM, qué es una ventana de contexto, por qué los modelos alucinan, y la diferencia entre completación inline, chat con contexto, y agentes autónomos. Incluir 3 ejemplos concretos de cada modo desde tu propia experiencia.",
+          },
+          {
+            topic: "Setup y configuración de GitHub Copilot en tu editor",
+            why: "GitHub Copilot es el asistente más extendido y el baseline contra el que se compara todo lo demás. Configurarlo correctamente incluye: activar/desactivar por lenguaje, entender el panel de sugerencias, usar Copilot Chat para preguntas contextuales, y configurar las keyboard shortcuts para aceptar, rechazar y ciclar entre sugerencias. La mayoría de desarrolladores usan menos del 30% de las capacidades de Copilot porque nunca leen la documentación.",
+            resource: { name: "GitHub Copilot — Getting Started", url: "https://docs.github.com/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot", free: true },
+            miniDeliverable: "Copilot configurado y funcionando en tu editor principal. Documento con: shortcuts personalizados, configuración por lenguaje, y 5 ejemplos de sugerencias aceptadas vs rechazadas con explicación de por qué.",
+          },
+          {
+            topic: "Setup y configuración de Cursor: reglas, contexto y composer",
+            why: "Cursor añade capacidades que Copilot no tiene: selección de contexto manual (@file, @folder, @web), composer para ediciones multi-archivo, y reglas de proyecto (.cursorrules) que condicionan el comportamiento del modelo. Entender estas diferencias te permite usar cada herramienta donde es más fuerte. Las reglas de proyecto son especialmente poderosas: le dicen al modelo qué convenciones seguir, qué patrones usar, y qué evitar — como tener un senior reviewer automático.",
+            resource: { name: "Cursor Docs — Rules for AI", url: "https://docs.cursor.com/context/rules-for-ai", free: true },
+            miniDeliverable: "Cursor configurado con archivo .cursorrules para tu proyecto principal. Documento comparando 5 tareas idénticas realizadas con Copilot vs Cursor: generación de función, refactoring, debugging, tests, y documentación. Evaluación honesta de cuál fue mejor en cada caso y por qué.",
+          },
+          {
+            topic: "Setup y flujo de trabajo con Claude Code (CLI)",
+            why: "Claude Code opera como agente en la terminal: lee tu codebase completo, ejecuta comandos, edita archivos, y puede completar tareas multi-paso sin intervención. Es fundamentalmente diferente a Copilot y Cursor porque no es un plugin de editor sino un agente autónomo con acceso al sistema de archivos y terminal. Entender cuándo usar un agente CLI vs un asistente de editor es clave para maximizar productividad — tareas de refactoring amplio, migraciones, y exploración de codebases grandes son ideales para Claude Code.",
+            resource: { name: "Claude Code — Anthropic Documentation", url: "https://docs.anthropic.com/en/docs/claude-code", free: true },
+            miniDeliverable: "Claude Code instalado y configurado. Completar 3 tareas reales con Claude Code: (1) explorar un codebase nuevo y generar un resumen de arquitectura, (2) refactorizar una función compleja, (3) agregar tests a un módulo existente. Documentar el flujo de cada tarea, los comandos usados, y la calidad del resultado.",
+          },
+          {
+            topic: "Prompt engineering para código: patrones que producen resultados predecibles",
+            why: "La calidad del output de cualquier asistente de IA depende directamente de la calidad del prompt. Para código, los patrones efectivos incluyen: dar contexto del proyecto, especificar el lenguaje y framework, incluir ejemplos del estilo deseado, pedir razonamiento paso a paso antes del código, y usar constraints explícitos ('no uses librería X', 'máximo 50 líneas'). La diferencia entre un prompt vago y uno estructurado es la diferencia entre código que necesita reescribirse y código que funciona al primer intento.",
+            resource: { name: "Anthropic — Prompt Engineering Guide", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering", free: true },
+            miniDeliverable: "Repositorio con 10+ ejemplos de prompts para código organizados por tarea: generación, refactoring, debugging, tests, documentación, y code review. Cada ejemplo con: prompt usado, output obtenido, evaluación de calidad (1–5), y versión mejorada del prompt si la calidad fue < 4.",
+          },
+          {
+            topic: "Comparativa práctica de herramientas: Copilot vs Cursor vs Claude Code vs Windsurf",
+            why: "Cada herramienta tiene fortalezas y debilidades específicas. Copilot es excelente en completación inline rápida. Cursor destaca en ediciones multi-archivo con contexto controlado. Claude Code brilla en tareas agénticas y refactoring de alcance amplio. Windsurf combina elementos de ambos mundos. La comparativa no es para elegir una — es para saber cuándo usar cada una. Un flujo de trabajo profesional puede usar 2–3 herramientas diferentes en el mismo día.",
+            resource: { name: "Cursor Documentation — Features", url: "https://docs.cursor.com", free: true },
+            miniDeliverable: "Documento comparativo estructurado: tabla con 8 criterios (completación inline, chat, multi-archivo, agentes, reglas de proyecto, costo, privacidad, integración con CI). Para cada herramienta, evaluación basada en uso real propio. Conclusión con recomendación de stack personal: qué herramienta para qué tipo de tarea.",
+          },
+        ],
+      },
+      {
+        label: "Mes 3",
+        title: "Dominio Avanzado — MCP, Reglas de Proyecto y Flujos Multi-Archivo",
+        deliverable: "MCP server funcional publicado en GitHub + archivo de reglas de proyecto avanzadas + documentación de 3 flujos multi-archivo complejos completados con asistentes IA.",
+        metric: "Puedes explicar el protocolo MCP y construir un server básico. Tus reglas de proyecto producen código consistente con las convenciones del equipo. Completas refactorings multi-archivo con asistencia IA en la mitad del tiempo manual.",
+        resources: [
+          { name: "Model Context Protocol — Specification", url: "https://modelcontextprotocol.io", free: true },
+          { name: "MCP TypeScript SDK", url: "https://github.com/modelcontextprotocol/typescript-sdk", free: true },
+          { name: "Anthropic — Claude Code Best Practices", url: "https://docs.anthropic.com/en/docs/claude-code/best-practices", free: true },
+          { name: "OWASP Top 10 for LLM Applications", url: "https://genai.owasp.org", free: true },
+        ],
+        objectives: [
+          {
+            topic: "Model Context Protocol (MCP): qué es, por qué importa y cómo funciona",
+            why: "MCP es un protocolo abierto que estandariza cómo los modelos de IA se conectan a herramientas y fuentes de datos externas. Es la diferencia entre un asistente que solo lee tu código y uno que puede consultar tu base de datos, buscar en tu documentación interna, o interactuar con tus APIs. Entender MCP a nivel de protocolo (transport, capabilities, resources, tools, prompts) te permite evaluar qué integraciones son posibles y construir las tuyas propias — una habilidad cada vez más demandada.",
+            resource: { name: "MCP — Specification & Architecture", url: "https://modelcontextprotocol.io/specification", free: true },
+            miniDeliverable: "Documento técnico explicando la arquitectura MCP: qué es un host, un client y un server; los 3 tipos de capabilities (resources, tools, prompts); cómo funciona el transport (stdio vs HTTP+SSE). Incluir diagrama de secuencia de una interacción completa entre Claude Code y un MCP server.",
+          },
+          {
+            topic: "Construir tu primer MCP server con TypeScript SDK",
+            why: "La mejor forma de entender MCP es construir un server. El TypeScript SDK provee las abstracciones para declarar tools (funciones que el modelo puede invocar), resources (datos que el modelo puede consultar), y prompts (templates reutilizables). Un server útil y simple: conectar a una API interna, leer de una base de datos, o exponer métricas de un sistema. El proceso de build → test → connect te da comprensión profunda del ciclo de vida de una llamada MCP que ningún tutorial teórico reemplaza.",
+            resource: { name: "MCP — TypeScript SDK Quick Start", url: "https://modelcontextprotocol.io/quickstart/server", free: true },
+            miniDeliverable: "MCP server funcional en TypeScript publicado en GitHub con al menos 2 tools y 1 resource. README con instrucciones de instalación, configuración para Claude Code, y ejemplos de uso. Tests básicos que verifiquen que los tools responden correctamente.",
+          },
+          {
+            topic: "Reglas de proyecto avanzadas: CLAUDE.md, .cursorrules y custom instructions",
+            why: "Las reglas de proyecto son el mecanismo más subestimado para obtener calidad consistente de los asistentes de IA. Un archivo CLAUDE.md bien escrito le dice a Claude Code: qué frameworks usas, qué convenciones de estilo seguir, qué patrones preferir, qué evitar, y cómo testear. Lo mismo aplica para .cursorrules en Cursor y custom instructions en Copilot. La diferencia entre un equipo que 'usa IA' y uno que obtiene valor real es la calidad de estas reglas — son como un onboarding document para tu asistente de IA.",
+            resource: { name: "Claude Code — Best Practices: CLAUDE.md", url: "https://docs.anthropic.com/en/docs/claude-code/best-practices", free: true },
+            miniDeliverable: "Archivos CLAUDE.md y .cursorrules para tu proyecto principal, cada uno con al menos 15 reglas específicas organizadas por categoría (arquitectura, estilo, testing, seguridad, dependencias). Documento comparando el output del asistente antes y después de aplicar las reglas en 3 tareas idénticas.",
+          },
+          {
+            topic: "Flujos multi-archivo: refactoring, migraciones y cambios de alcance amplio",
+            why: "Las tareas donde la IA genera más valor no son funciones individuales — son cambios que tocan 10+ archivos: migrar de una librería a otra, refactorizar un patrón en todo el codebase, o añadir un campo que atraviesa desde la API hasta el frontend. Estas tareas son tediosas para un humano pero naturales para un agente con contexto del proyecto completo. La habilidad no es pedirle al agente que lo haga — es saber cómo dividir la tarea, verificar el resultado parcial, y corregir el rumbo cuando el agente se desvía.",
+            resource: { name: "Claude Code — Multi-file editing", url: "https://docs.anthropic.com/en/docs/claude-code", free: true },
+            miniDeliverable: "Documentación de 3 flujos multi-archivo completados con asistencia IA: (1) migración de librería o patrón, (2) adición de feature que toca 5+ archivos, (3) refactoring de estructura de carpetas o naming. Para cada uno: plan inicial, herramienta usada, archivos modificados, errores que el agente cometió, y correcciones manuales necesarias.",
+          },
+          {
+            topic: "Seguridad y revisión crítica del código generado por IA",
+            why: "El código generado por IA puede contener vulnerabilidades sutiles: inyección SQL si el modelo no parametriza queries, XSS si no escapa output, secrets hardcodeados en ejemplos, o dependencias desactualizadas con CVEs conocidos. La regla es simple: todo código generado por IA necesita el mismo nivel de revisión que un PR de un junior — o más, porque un junior sabe que no sabe, pero la IA genera código con confianza independientemente de su corrección. OWASP Top 10 for LLM Applications cubre los riesgos específicos de aplicaciones que usan IA generativa.",
+            resource: { name: "OWASP Top 10 for LLM Applications", url: "https://genai.owasp.org", free: true },
+            miniDeliverable: "Checklist de revisión de seguridad para código generado por IA con 15+ puntos organizados por categoría (inyección, autenticación, secrets, dependencias, lógica de negocio). Aplicar el checklist a 5 piezas de código generado por IA en tu proyecto y documentar hallazgos reales — al menos 3 problemas encontrados y corregidos.",
+          },
+        ],
+      },
+      {
+        label: "Mes 4",
+        title: "Flujos Agénticos — Automatización, APIs y Medición de Impacto",
+        deliverable: "Workflow agéntico productivo documentado + integración CI/CD con IA + MCP server avanzado + post técnico publicado sobre tu experiencia con herramientas IA.",
+        metric: "Tienes un flujo de trabajo donde la IA maneja tareas repetitivas de forma autónoma. Puedes cuantificar el impacto en tu productividad con datos reales. Has publicado tu experiencia y contribuido al ecosistema MCP.",
+        resources: [
+          { name: "Anthropic API — Tool Use", url: "https://docs.anthropic.com/en/docs/build-with-claude/tool-use", free: true },
+          { name: "Claude Agent SDK", url: "https://github.com/anthropics/claude-code-sdk", free: true },
+          { name: "GitHub Actions Documentation", url: "https://docs.github.com/en/actions", free: true },
+          { name: "MCP Servers Registry", url: "https://github.com/modelcontextprotocol/servers", free: true },
+        ],
+        objectives: [
+          {
+            topic: "Workflows agénticos: diseñar tareas donde la IA opera de forma autónoma",
+            why: "Un workflow agéntico es una cadena de acciones donde el modelo toma decisiones intermedias sin intervención humana: lee código → identifica un problema → propone una solución → la implementa → ejecuta tests → reporta el resultado. La clave no es delegar todo — es identificar qué tareas son seguras para automatizar (generación de tests, linting, documentación) y cuáles requieren supervisión humana (cambios de lógica de negocio, decisiones de arquitectura). El diseño del workflow es donde está el valor, no la ejecución.",
+            resource: { name: "Claude Code SDK — Building Agentic Workflows", url: "https://github.com/anthropics/claude-code-sdk", free: true },
+            miniDeliverable: "Documento de diseño de 3 workflows agénticos para tu proyecto: (1) generación automática de tests para funciones nuevas, (2) revisión de PR con checklist personalizado, (3) actualización de documentación cuando cambia el código. Para cada uno: diagrama de flujo, herramientas necesarias, puntos de supervisión humana, y criterios de éxito.",
+          },
+          {
+            topic: "Anthropic API y tool use: construir agentes personalizados",
+            why: "La API de Anthropic con tool use te permite construir agentes que van más allá de lo que Claude Code ofrece out-of-the-box. Puedes definir tools personalizados que el modelo invoca según necesite: consultar una API, ejecutar un script, leer un archivo de configuración, o interactuar con un servicio externo. Esto abre la puerta a automatizaciones específicas de tu dominio — un agente que revisa PRs según las reglas de tu equipo, otro que genera reportes de métricas, otro que clasifica issues automáticamente.",
+            resource: { name: "Anthropic API — Tool Use Documentation", url: "https://docs.anthropic.com/en/docs/build-with-claude/tool-use", free: true },
+            miniDeliverable: "Script o aplicación que usa la API de Anthropic con al menos 3 tools personalizados. Ejemplo: agente que lee un issue de GitHub, analiza el codebase relevante, y genera un borrador de PR con los cambios sugeridos. Código publicado en GitHub con README y ejemplos de ejecución.",
+          },
+          {
+            topic: "MCP server avanzado: conectar sistemas internos y datos propietarios",
+            why: "Un MCP server avanzado conecta tu asistente de IA a los sistemas que realmente importan en tu trabajo diario: Jira/Linear para issues, Slack para contexto de conversaciones, tu base de datos para consultas, o tu sistema de monitoreo para alertas. La potencia de MCP es que transforma al asistente de un lector de código a un participante activo en tu ecosistema de herramientas. Un server bien construido con buena documentación puede ser útil para todo tu equipo — y es una contribución significativa al ecosistema open source.",
+            resource: { name: "MCP Servers — Community Examples", url: "https://github.com/modelcontextprotocol/servers", free: true },
+            miniDeliverable: "MCP server avanzado publicado en GitHub que conecta a un sistema real de tu stack (base de datos, API interna, sistema de tickets, o monitoreo). Mínimo 4 tools y 2 resources. README completo con: arquitectura, setup, configuración de seguridad, y video demo de 3 minutos mostrando el server en uso con Claude Code.",
+          },
+          {
+            topic: "GitHub Actions + IA: automatizar code review, tests y documentación en CI/CD",
+            why: "Integrar IA en tu pipeline de CI/CD automatiza las tareas más repetitivas del ciclo de desarrollo: revisar PRs contra un checklist de calidad, generar tests para código nuevo, actualizar documentación cuando cambian las interfaces, y clasificar la severidad de issues nuevos. GitHub Actions es el punto de integración natural — ya está en tu workflow, y añadir un paso que invoque la API de Anthropic o ejecute Claude Code es directo. La clave es empezar con tareas de bajo riesgo (comentarios en PRs) antes de escalar a tareas que modifiquen código.",
+            resource: { name: "GitHub Actions — Workflow Syntax", url: "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", free: true },
+            miniDeliverable: "GitHub Action funcional que usa IA en al menos uno de estos flujos: (1) auto-review de PRs con comentarios, (2) generación de changelog a partir de commits, o (3) verificación de que la documentación refleja los cambios del PR. Action publicada en el repositorio con documentación de configuración y ejemplos de output real.",
+          },
+          {
+            topic: "Métricas de productividad: medir el ROI real de herramientas IA en tu flujo",
+            why: "Sin medición, no hay forma de saber si las herramientas de IA realmente te hacen más productivo o solo dan la ilusión de velocidad. Las métricas relevantes incluyen: tiempo de completación de tareas (antes vs después), calidad del código generado (bugs introducidos, cobertura de tests), satisfacción subjetiva (frustración, confianza en el output), y métricas de equipo (velocity, lead time, tiempo de review). Un tracking honesto durante 4 semanas con y sin herramientas IA te da datos reales para decidir qué herramientas mantener y cuáles no valen el costo.",
+            resource: { name: "Anthropic — Claude Code Best Practices", url: "https://docs.anthropic.com/en/docs/claude-code/best-practices", free: true },
+            miniDeliverable: "Dashboard o documento con métricas de 4 semanas: (1) tiempo promedio por tipo de tarea con y sin IA, (2) tasa de aceptación de código generado (sin modificaciones vs con cambios significativos), (3) bugs atribuibles a código generado por IA, (4) estimación de horas ahorradas por semana. Conclusión con ROI calculado considerando el costo de las herramientas.",
+          },
+          {
+            topic: "Post técnico: publicar tu experiencia y aprendizajes con herramientas IA para código",
+            why: "Publicar tu experiencia cierra el ciclo de aprendizaje de los 3 meses. Escribir obliga a organizar lo aprendido, identificar qué realmente funcionó, y articular insights que otros pueden usar. El ecosistema de herramientas IA para código evoluciona tan rápido que las experiencias prácticas actuales son extremadamente valiosas — hay mucho contenido de marketing pero poco de uso real por ingenieros en producción. Un post honesto sobre qué funcionó, qué no, y qué métricas obtuviste es una contribución real a la comunidad.",
+            resource: { name: "Dev.to — Plataforma de publicación técnica", url: "https://dev.to", free: true },
+            miniDeliverable: "Post publicado de 1000+ palabras con: (1) stack de herramientas IA que usas y por qué, (2) 3 casos de uso donde la IA generó valor real con ejemplos concretos, (3) 3 casos donde falló y cómo lo resolviste, (4) métricas de productividad antes vs después, (5) recomendaciones para otros ingenieros que empiezan. Compartir en al menos 2 comunidades técnicas.",
           },
         ],
       },

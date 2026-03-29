@@ -1,7 +1,7 @@
 import { createRoute, Link } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
 import {
-  Layers, Activity, Cpu, Code2, Globe, Cloud,
+  Layers, Activity, Cpu, Code2, Globe, Cloud, Wand2,
   Target, Zap, BookOpen, TrendingUp, ArrowRight,
   Clock, Brain, Flame, CheckCircle2, BarChart2,
 } from "lucide-react";
@@ -38,6 +38,12 @@ const AREAS = [
     headline: "Inglés Técnico",
     desc: "Escribir artículos técnicos, publicar en redes profesionales y participar en comunidades globales. Construir presencia y hábito de comunicación en inglés.",
     months: "3 meses", phases: 3,
+  },
+  {
+    id: "ai-code-tools", icon: Wand2,
+    headline: "IA para Código",
+    desc: "Dominar Copilot, Cursor, Claude Code y Windsurf. Construir MCP servers, diseñar flujos agénticos y dominar prompt engineering para resultados predecibles.",
+    months: "4 meses", phases: 4,
   },
 ];
 
@@ -97,7 +103,7 @@ const HomePage = () => {
           {/* Stats */}
           <div className="flex justify-center gap-3 sm:gap-5 flex-wrap mb-8">
             {[
-              { value: "5", label: "áreas", color: "#a78bfa" },
+              { value: "6", label: "áreas", color: "#a78bfa" },
               { value: String(totalPhases), label: "fases", color: "#00D4FF" },
               { value: String(totalObjectives), label: "temas", color: "#FFB800" },
               { value: String(totalResources), label: "recursos", color: "#00C896" },
@@ -125,11 +131,11 @@ const HomePage = () => {
       </section>
 
       {/* ════════════════════════════════════════════════
-          5 AREAS
+          6 AREAS
       ════════════════════════════════════════════════ */}
       <section className="max-w-[960px] mx-auto px-4 sm:px-10 py-10 sm:py-16">
         <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-xl sm:text-[32px] font-bold mb-2" style={{ color: "#e0e6f0" }}>5 áreas + 1 opcional, un solo objetivo</h2>
+          <h2 className="text-xl sm:text-[32px] font-bold mb-2" style={{ color: "#e0e6f0" }}>6 áreas + 1 opcional, un solo objetivo</h2>
           <p className="text-[13px] sm:text-base" style={{ color: "#5a6880" }}>Cada área desarrolla una competencia clave para el crecimiento profesional senior.</p>
         </div>
 
@@ -304,6 +310,7 @@ const HomePage = () => {
             { icon: Cpu, color: "#7C3AED", title: "Proyectos de inteligencia artificial", items: ["Pipeline de búsqueda semántica (RAG) funcional", "Sistema con agentes autónomos y evaluación", "Artículos de investigación resumidos y replicados"] },
             { icon: Activity, color: "#FFB800", title: "Stack de observabilidad", items: ["Dashboards con indicadores de confiabilidad reales", "Guías de respuesta a incidentes documentadas", "Alertas y presupuestos de error configurados"] },
             { icon: Globe, color: "#00C896", title: "Presencia en inglés", items: ["Artículos técnicos publicados", "Publicaciones en X con interacción real", "Participación activa en comunidades"] },
+            { icon: Wand2, color: "#E91E63", title: "Ecosistema IA para código", items: ["MCP servers publicados en GitHub", "Workflows agénticos productivos documentados", "Post técnico con métricas de ROI reales"] },
             { icon: TrendingUp, color: "#a78bfa", title: "Historial de progreso medible", items: ["Registro de consistencia semanal", "Rachas de estudio documentadas", "Línea de tiempo de progreso por fase"] },
           ].map((d, i) => (
             <div key={i} className="rounded-[14px] p-5" style={{ background: d.color + "06", border: `1px solid ${d.color}15` }}>

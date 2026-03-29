@@ -42,7 +42,7 @@ const RoadmapPage = () => {
                 <AreaIcon id={a.id} size={13} style={{ color: on ? a.color : "#5a6880" }} />
               </div>
               <span className={`text-xs sm:text-[14px] ${on ? "font-bold" : "font-medium"}`} style={{ color: on ? a.color : "#6a7888" }}>
-                <span className="sm:hidden">{a.id === "algoritmos" ? "DSA" : a.id === "ingles-tecnico" ? "Inglés" : a.title.split(" ")[0]}</span>
+                <span className="sm:hidden">{a.id === "algoritmos" ? "DSA" : a.id === "ingles-tecnico" ? "Inglés" : a.id === "ai-code-tools" ? "IA Code" : a.title.split(" ")[0]}</span>
                 <span className="hidden sm:inline">{a.title}</span>
               </span>
               {on && <span className="hidden sm:inline text-[9px] font-mono font-bold py-0.5 px-1.5 rounded-md" style={{ background: a.color + "18", color: a.color + "AA" }}>{a.period}</span>}
