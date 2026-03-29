@@ -30,7 +30,7 @@ const RootLayout = () => {
         <div className="flex items-start justify-between flex-wrap gap-3">
           <Link to="/" className="no-underline">
             <div className="font-mono text-[9px] sm:text-[13px] tracking-widest uppercase mb-1.5" style={{ color: "#4a90b8" }}>
-              Roadmap 2026 — Ingeniero de Clase Mundial
+              Roadmap 2026 — Ingeniería de Clase Mundial
             </div>
             <h1 className="text-xl sm:text-[30px] font-bold tracking-tight bg-gradient-to-br from-white to-[#8899bb] bg-clip-text" style={{ WebkitTextFillColor: "transparent" }}>
               Skill Upgrade Plan
@@ -67,8 +67,8 @@ const RootLayout = () => {
             ) : (
               <button
                 onClick={() => setAuthOpen(true)}
-                className="nav-btn flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-4 rounded-lg cursor-pointer font-sans whitespace-nowrap text-xs sm:text-[14px] font-medium"
-                style={{ background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.4)", color: "#a78bfa" }}
+                className="auth-btn flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-4 rounded-lg cursor-pointer font-sans whitespace-nowrap text-xs sm:text-[14px] font-semibold"
+                style={{ background: "rgba(124,58,237,0.18)", border: "1px solid rgba(124,58,237,0.45)", color: "#a78bfa" }}
               >
                 <LogIn size={13} />
                 <span className="hidden sm:inline">Entrar</span>

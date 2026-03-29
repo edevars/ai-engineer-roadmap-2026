@@ -1,36 +1,39 @@
 export const calendarWeek = [
   {
-    day: "Lunes", shortDay: "Lun", totalMin: 90,
-    focus: "System Design + DSA",
+    day: "Lunes", shortDay: "Lun", totalMin: 105,
+    focus: "System Design + DSA + Inglés",
     blocks: [
       { area: "algoritmos",    label: "LeetCode — 1 problema del tema actual. Sin ver solución hasta intentarlo 20 min.", duration: 30 },
       { area: "system-design", label: "Lectura activa de DDIA o SDI: subraya, toma notas en tu propio lenguaje. Al terminar, dibuja el concepto en Excalidraw.", duration: 60 },
+      { area: "ingles-tecnico", label: "Escucha activa: 1 episodio de podcast técnico en inglés (Software Engineering Daily, CoRecursive). Tomar 3 bullet points de lo aprendido.", duration: 15 },
     ],
   },
   {
-    day: "Martes", shortDay: "Mar", totalMin: 90,
-    focus: "AI Engineering + DSA",
+    day: "Martes", shortDay: "Mar", totalMin: 105,
+    focus: "AI Engineering + DSA + Inglés",
     blocks: [
       { area: "algoritmos",    label: "LeetCode — 1 problema del tema actual. Si no lo resuelves en 25 min, estudia la solución y resuélvelo desde cero al día siguiente.", duration: 30 },
       { area: "ai-engineering", label: "Avanzar en Fast.ai, Hugging Face Course, o construir en el proyecto agéntico / RAG actual.", duration: 60 },
+      { area: "ingles-tecnico", label: "Vocabulario técnico: revisar flashcards en Anki (15 tarjetas) + leer 1 post de engineering blog en inglés. Anotar 5 términos nuevos.", duration: 15 },
     ],
   },
   {
-    day: "Miércoles", shortDay: "Mié", totalMin: 90,
+    day: "Miércoles", shortDay: "Mié", totalMin: 105,
     focus: "Observabilidad + Inglés",
     blocks: [
       { area: "algoritmos",    label: "LeetCode — 1 problema. Priorizar el patrón más débil de la semana.", duration: 30 },
       { area: "observabilidad", label: "Instrumentar, ajustar dashboards, o estudiar el SRE Book. Siempre con el sistema de práctica abierto.", duration: 45 },
-      { area: "ingles-tecnico", label: "Escribir un thread técnico en X (5 tweets) o el primer borrador de un párrafo del post en progreso.", duration: 15 },
+      { area: "ingles-tecnico", label: "Escritura técnica en inglés: avanzar en el borrador del post actual o escribir un thread técnico para X (5+ tweets).", duration: 30 },
     ],
   },
   {
-    day: "Jueves", shortDay: "Jue", totalMin: 90,
-    focus: "System Design + AI",
+    day: "Jueves", shortDay: "Jue", totalMin: 105,
+    focus: "System Design + AI + Inglés",
     blocks: [
       { area: "algoritmos",    label: "LeetCode — 1 problema. Documentar el patrón usado en tu repositorio de soluciones.", duration: 30 },
       { area: "system-design", label: "Resolver un system design challenge completo en Excalidraw: back-of-envelope, componentes, trade-offs.", duration: 45 },
       { area: "ai-engineering", label: "Leer 1 post de Latent Space, Anthropic o AI Engineer community. Escribir 3 bullet points de lo aprendido.", duration: 15 },
+      { area: "ingles-tecnico", label: "Práctica oral: grabar 3–5 min explicando en inglés un concepto técnico, un PR, o una decisión de diseño de la semana.", duration: 15 },
     ],
   },
   {
@@ -39,7 +42,7 @@ export const calendarWeek = [
     blocks: [
       { area: "algoritmos",    label: "LeetCode — 1 problema. Si ya terminaste los del tema actual, avanza al siguiente.", duration: 30 },
       { area: "observabilidad", label: "Revisar alertas, ajustar SLIs, o escribir/actualizar el runbook de la semana.", duration: 30 },
-      { area: "ingles-tecnico", label: "Editar o continuar el post técnico en inglés. Meta: publicar 1 post cada 2 semanas.", duration: 30 },
+      { area: "ingles-tecnico", label: "Editar o continuar el post técnico en inglés. Meta: publicar 1 post cada 2 semanas. Si el post está listo, participar en una discusión técnica en Reddit o GitHub.", duration: 30 },
     ],
   },
   {
@@ -51,10 +54,10 @@ export const calendarWeek = [
     ],
   },
   {
-    day: "Domingo", shortDay: "Dom", totalMin: 60,
-    focus: "Review + Inglés",
+    day: "Domingo", shortDay: "Dom", totalMin: 75,
+    focus: "Review + Inglés intensivo",
     blocks: [
-      { area: "ingles-tecnico", label: "Leer 2 posts técnicos en inglés de referentes. Analizar su estructura y tomar notas del estilo.", duration: 30 },
+      { area: "ingles-tecnico", label: "Sesión de inmersión: ver 1 conference talk en inglés sin subtítulos (20 min) + leer 1 post técnico de referentes y analizar estructura y vocabulario.", duration: 45 },
       { area: "system-design", label: "Revisión semanal: actualizar ADRs, notas de system design, o agenda del roadmap de la semana siguiente.", duration: 30 },
     ],
   },

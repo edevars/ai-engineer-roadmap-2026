@@ -12,47 +12,47 @@ const AREAS = [
   {
     id: "system-design", icon: Layers,
     headline: "System Design",
-    desc: "De implementador a arquitecto. DDIA, Alex Xu, diagramas reales y ADRs — la intuición para decir 'esto va a fallar en producción' antes de escribir código.",
+    desc: "Aprende a diseñar sistemas completos y tomar decisiones de arquitectura con criterio. Libros de referencia, diagramas reales y documentos de decisión técnica (ADR).",
     months: "6 meses", phases: 3,
   },
   {
     id: "observabilidad", icon: Activity,
     headline: "Observabilidad & SRE",
-    desc: "Logs, métricas, traces con OpenTelemetry. SLIs, SLOs, error budgets, postmortems. El stack completo para operar sistemas con confianza.",
+    desc: "Registros, métricas y trazas con OpenTelemetry para entender qué pasa dentro de tus sistemas. Objetivos de confiabilidad, presupuestos de error y análisis de incidentes.",
     months: "3 meses", phases: 3,
   },
   {
     id: "ai-engineering", icon: Cpu,
     headline: "AI Engineering",
-    desc: "De fundamentos de deep learning a sistemas agénticos en producción. RAG, evals, LangGraph, papers de referencia y presencia pública.",
+    desc: "Desde los fundamentos del aprendizaje profundo hasta sistemas de IA en producción: búsqueda semántica, evaluación de modelos, agentes autónomos y artículos de referencia.",
     months: "8 meses", phases: 4,
   },
   {
     id: "algoritmos", icon: Code2,
-    headline: "DSA & LeetCode",
-    desc: "150+ problemas curados con progresión de dificultad. Arrays, trees, graphs, DP — patrones que aparecen en entrevistas de FAANG.",
+    headline: "Algoritmos & LeetCode",
+    desc: "Más de 150 problemas seleccionados con dificultad progresiva. Estructuras de datos, grafos y programación dinámica — los patrones clave en entrevistas técnicas.",
     months: "6 meses", phases: 3,
   },
   {
     id: "ingles-tecnico", icon: Globe,
     headline: "Inglés Técnico",
-    desc: "Escribir posts técnicos, threads en X, participar en comunidades. Construir portfolio y hábito de comunicación en inglés.",
+    desc: "Escribir artículos técnicos, publicar en redes profesionales y participar en comunidades globales. Construir presencia y hábito de comunicación en inglés.",
     months: "3 meses", phases: 3,
   },
 ];
 
 const PRINCIPLES = [
   { icon: Clock, title: "Consistencia > Intensidad", body: "30 minutos diarios superan 4 horas esporádicas. El cerebro construye conexiones con repetición espaciada, no con maratones." },
-  { icon: Target, title: "Output obligatorio", body: "Cada sesión produce algo tangible: un diagrama, un commit, un ADR, una solución documentada. Leer sin producir es ilusión de progreso." },
-  { icon: Brain, title: "Profundidad antes que amplitud", body: "60 minutos concentrados en un tema vale más que 4×15 saltando entre áreas. La maestría requiere inmersión." },
-  { icon: Flame, title: "Entregables verificables", body: "Los mini-entregables de cada fase prueban que el conocimiento es real. Si no puedes explicarlo sin notas, no lo sabes." },
+  { icon: Target, title: "Producir es obligatorio", body: "Cada sesión genera algo tangible: un diagrama, un commit, un documento de decisión, una solución. Leer sin producir es ilusión de progreso." },
+  { icon: Brain, title: "Profundidad antes que amplitud", body: "60 minutos de concentración en un solo tema superan cuatro sesiones de 15 saltando entre áreas. Dominar algo requiere inmersión." },
+  { icon: Flame, title: "Entregables verificables", body: "Cada fase incluye mini-entregables que prueban que el conocimiento es real. Si no puedes explicarlo sin notas, aún no lo dominas." },
 ];
 
 const METHODOLOGY = [
-  { num: "01", title: "Calendario semanal estructurado", body: "Cada día tiene bloques asignados a áreas específicas. 10.5 horas/semana distribuidas en sesiones de 15–60 minutos optimizadas para retención.", color: "#00D4FF" },
-  { num: "02", title: "Progreso automático medible", body: "Cada bloque completado alimenta el tracker. Ves tu consistencia, rachas y ritmo por área — sin checkboxes manuales, solo trabajo real.", color: "#7C3AED" },
-  { num: "03", title: "Fases con timeline", body: "Cada área se divide en fases con fechas. Sabes exactamente qué deberías estar estudiando ahora y si vas al ritmo esperado.", color: "#FFB800" },
-  { num: "04", title: "Recursos curados + owned", body: "Cada tema tiene un recurso específico (capítulo, video, docs) y un mini-entregable. Sin ambigüedad sobre qué estudiar ni cómo verificar que lo aprendiste.", color: "#FF6B35" },
+  { num: "01", title: "Calendario semanal estructurado", body: "Cada día tiene bloques asignados a áreas específicas. 10.5 horas semanales en sesiones de 15 a 60 minutos, optimizadas para retención a largo plazo.", color: "#00D4FF" },
+  { num: "02", title: "Progreso automático medible", body: "Cada bloque completado se registra en el tracker automáticamente. Consulta tu consistencia, rachas y ritmo por área — sin marcas manuales, solo trabajo real.", color: "#7C3AED" },
+  { num: "03", title: "Fases con fechas definidas", body: "Cada área se divide en fases con fechas concretas. Siempre sabes qué estudiar en cada momento y si vas al ritmo esperado.", color: "#FFB800" },
+  { num: "04", title: "Recursos seleccionados y propios", body: "Cada tema incluye un recurso específico (capítulo, video, documentación) y un mini-entregable. Sin ambigüedad: sabes qué estudiar y cómo verificar tu aprendizaje.", color: "#FF6B35" },
 ];
 
 const HomePage = () => {
@@ -87,11 +87,11 @@ const HomePage = () => {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-            Conviértete en un ingeniero<br className="hidden sm:block" /> de clase mundial
+            Lleva tu ingeniería<br className="hidden sm:block" /> al siguiente nivel
           </h1>
 
           <p className="text-[15px] sm:text-lg leading-relaxed mb-8 max-w-[600px] mx-auto" style={{ color: "#7a8898" }}>
-            Un plan estructurado, medible y realista para dominar system design, algoritmos, AI engineering, observabilidad e inglés técnico — con seguimiento semanal y progreso automático.
+            Un plan de estudio estructurado y medible para dominar diseño de sistemas, algoritmos, inteligencia artificial aplicada, observabilidad e inglés técnico — con seguimiento semanal y progreso automático.
           </p>
 
           {/* Stats */}
@@ -129,8 +129,8 @@ const HomePage = () => {
       ════════════════════════════════════════════════ */}
       <section className="max-w-[960px] mx-auto px-4 sm:px-10 py-10 sm:py-16">
         <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-xl sm:text-[32px] font-bold mb-2" style={{ color: "#e0e6f0" }}>5 áreas + 1 opcional, un objetivo</h2>
-          <p className="text-[13px] sm:text-base" style={{ color: "#5a6880" }}>Cada área ataca una dimensión crítica del ingeniero senior moderno.</p>
+          <h2 className="text-xl sm:text-[32px] font-bold mb-2" style={{ color: "#e0e6f0" }}>5 áreas + 1 opcional, un solo objetivo</h2>
+          <p className="text-[13px] sm:text-base" style={{ color: "#5a6880" }}>Cada área desarrolla una competencia clave para el crecimiento profesional senior.</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -187,7 +187,7 @@ const HomePage = () => {
               <ArrowRight size={14} className="ml-auto" style={{ color: "#FF950060" }} />
             </div>
             <p className="text-[12px] sm:text-[13px] leading-relaxed m-0" style={{ color: "#6a7888" }}>
-              De usuario casual a arquitecto cloud certificado. Fundamentos, networking, compute, almacenamiento y arquitectura de alta disponibilidad en AWS.
+              Desde los fundamentos hasta la arquitectura de alta disponibilidad en AWS: redes, cómputo, almacenamiento y preparación para certificación cloud.
             </p>
           </Link>
         </div>
@@ -283,7 +283,7 @@ const HomePage = () => {
           </div>
 
           <div className="text-center mt-5">
-            <span className="text-xs sm:text-sm font-mono" style={{ color: "#3a4a5a" }}>630 min/semana · DSA todos los días · Deep work los fines de semana</span>
+            <span className="text-xs sm:text-sm font-mono" style={{ color: "#3a4a5a" }}>630 min/semana · Algoritmos todos los días · Sesiones largas los fines de semana</span>
           </div>
         </div>
       </section>
@@ -299,12 +299,12 @@ const HomePage = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
-            { icon: Layers, color: "#00D4FF", title: "Portafolio de system design", items: ["8+ diagramas comentados", "5+ ADRs publicados", "Diseños end-to-end en Excalidraw"] },
+            { icon: Layers, color: "#00D4FF", title: "Portafolio de diseño de sistemas", items: ["8+ diagramas comentados", "5+ documentos de decisión (ADR) publicados", "Diseños de arquitectura completos en Excalidraw"] },
             { icon: Code2, color: "#FF6B35", title: "Repositorio de algoritmos", items: ["150+ soluciones documentadas", "Patrones categorizados", "Complejidad analizada por problema"] },
-            { icon: Cpu, color: "#7C3AED", title: "Proyectos de AI", items: ["Pipeline RAG funcional", "Sistema agéntico con evaluación", "Papers resumidos y replicados"] },
-            { icon: Activity, color: "#FFB800", title: "Stack de observabilidad", items: ["Dashboards con SLIs reales", "Runbooks documentados", "Alertas y error budgets configurados"] },
-            { icon: Globe, color: "#00C896", title: "Presencia en inglés", items: ["Posts técnicos publicados", "Threads en X con engagement", "Participación en comunidades"] },
-            { icon: TrendingUp, color: "#a78bfa", title: "Track record medible", items: ["Historial de consistencia semanal", "Rachas de estudio documentadas", "Timeline de progreso por fase"] },
+            { icon: Cpu, color: "#7C3AED", title: "Proyectos de inteligencia artificial", items: ["Pipeline de búsqueda semántica (RAG) funcional", "Sistema con agentes autónomos y evaluación", "Artículos de investigación resumidos y replicados"] },
+            { icon: Activity, color: "#FFB800", title: "Stack de observabilidad", items: ["Dashboards con indicadores de confiabilidad reales", "Guías de respuesta a incidentes documentadas", "Alertas y presupuestos de error configurados"] },
+            { icon: Globe, color: "#00C896", title: "Presencia en inglés", items: ["Artículos técnicos publicados", "Publicaciones en X con interacción real", "Participación activa en comunidades"] },
+            { icon: TrendingUp, color: "#a78bfa", title: "Historial de progreso medible", items: ["Registro de consistencia semanal", "Rachas de estudio documentadas", "Línea de tiempo de progreso por fase"] },
           ].map((d, i) => (
             <div key={i} className="rounded-[14px] p-5" style={{ background: d.color + "06", border: `1px solid ${d.color}15` }}>
               <d.icon size={20} style={{ color: d.color, marginBottom: 10 }} />

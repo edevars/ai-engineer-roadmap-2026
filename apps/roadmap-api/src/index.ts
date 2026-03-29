@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import type { Env } from "./types";
 import { corsMiddleware } from "./middleware/cors";
+import { createDb } from "./db";
 import authRoutes from "./routes/auth";
 import weeklyRoutes from "./routes/weekly";
 import phasesRoutes from "./routes/phases";
@@ -10,6 +11,10 @@ import streaksRoutes from "./routes/streaks";
 const app = new Hono<Env>();
 
 app.use("/*", corsMiddleware);
+app.use("/*", async (c, next) => {
+  c.set("db", createDb(c.env.DB));
+  await next();
+});
 
 app.route("/api/v1/auth", authRoutes);
 app.route("/api/v1/progress/weekly", weeklyRoutes);

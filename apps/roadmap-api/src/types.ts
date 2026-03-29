@@ -1,3 +1,5 @@
+import type { Database } from "./db";
+
 export type Env = {
   Bindings: {
     DB: D1Database;
@@ -5,6 +7,7 @@ export type Env = {
   };
   Variables: {
     user: AuthUser;
+    db: Database;
   };
 };
 

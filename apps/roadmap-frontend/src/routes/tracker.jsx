@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { Route as rootRoute } from "./__root";
-import { BarChart2, CalendarDays, Map, Clock, Check, X, Rocket, LogIn } from "lucide-react";
+import { BarChart2, CalendarDays, Map, Clock, Check, X, Rocket, LogIn, Flame, TrendingUp, Target } from "lucide-react";
 import { roadmapData } from "../data/roadmap-data";
 import { AREA_META } from "../data/area-meta";
 import { calendarWeek } from "../data/calendar-data";
@@ -143,24 +143,225 @@ const TrackerPage = () => {
   }
 
   if (!user) {
+    // Mock data for blurred preview
+    const mockChecked = { "0-0": true, "0-1": true, "1-0": true, "2-0": true, "2-1": true, "3-0": true, "3-2": true, "4-0": true, "5-0": true };
+    const mockWeekDone = Object.keys(mockChecked).length;
+    const mockWeekPct = Math.round((mockWeekDone / totalWeekBlocks) * 100);
+    const mockTotalPct = 34;
+    const mockTotalDone = 7;
+    const mockTotalPhases = 21;
+
+    const areaIds = Object.keys(AREA_META);
+    const mockAreaRows = areaIds.map(areaId => {
+      const meta = AREA_META[areaId];
+      const cells = calendarWeek.map((day, di) => {
+        const bi = day.blocks.findIndex(b => b.area === areaId);
+        return bi >= 0 ? { di, bi, block: day.blocks[bi], key: `${di}-${bi}` } : null;
+      });
+      const total = cells.filter(Boolean).length;
+      const done = cells.filter(c => c && mockChecked[c.key]).length;
+      return { areaId, meta, cells, total, done };
+    });
+
+    const todayJsDay = new Date().getDay();
+    const mockTodayIdx = todayJsDay === 0 ? 6 : todayJsDay - 1;
+
     return (
-      <div className="min-h-[60vh] py-6 px-4 pb-[60px] sm:py-9 sm:px-10 sm:pb-[60px] max-w-[960px] mx-auto">
-        <div className="flex flex-col items-center justify-center py-20">
-          <div className="rounded-2xl p-8 sm:p-10 text-center max-w-[420px]" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)" }}>
-            <BarChart2 size={36} style={{ color: "#a78bfa", margin: "0 auto 16px" }} />
-            <h2 className="text-xl sm:text-2xl font-bold mb-2" style={{ color: "#e0e6f0" }}>Progress Tracker</h2>
-            <p className="text-[13px] sm:text-sm leading-relaxed mb-6" style={{ color: "#5a6880" }}>
-              Inicia sesión para acceder al tracker: seguimiento semanal, historial de progreso, rachas y timeline de tu roadmap.
-            </p>
+      <div className="min-h-[60vh] py-6 px-4 pb-[60px] sm:py-9 sm:px-10 sm:pb-[60px] max-w-[960px] mx-auto" style={{ position: "relative", overflow: "hidden" }}>
+        {/* ── Blurred mock preview ── */}
+        <div style={{ filter: "blur(5px)", pointerEvents: "none", userSelect: "none", opacity: 0.7 }} aria-hidden="true">
+          {/* Mock header */}
+          <div className="mb-7">
+            <div className="flex items-start justify-between flex-wrap gap-3 mb-5">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <BarChart2 size={22} style={{ color: "#a78bfa" }} />
+                  <h2 className="text-xl sm:text-[28px] font-bold" style={{ color: "#e0e6f0" }}>Progress Tracker</h2>
+                </div>
+                <div className="flex items-center gap-3 ml-[30px]">
+                  <p className="text-[13px] sm:text-[15px]" style={{ color: "#5a6880", margin: 0 }}>Seguimiento semanal y total del roadmap</p>
+                  <span className="text-[11px] sm:text-xs font-mono" style={{ color: "#3a4a5a" }}>Semana 8 de ~26 (31% del tiempo)</span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-5 rounded-lg text-xs sm:text-[15px] font-bold" style={{ background: "rgba(167,139,250,0.15)", border: "1px solid rgba(167,139,250,0.5)", color: "#a78bfa" }}>
+                  <CalendarDays size={13} /> Esta semana
+                </div>
+                <div className="flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-5 rounded-lg text-xs sm:text-[15px]" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#5a6880" }}>
+                  <Clock size={13} /> Historial
+                </div>
+                <div className="flex items-center gap-1.5 py-[7px] px-3.5 sm:py-2 sm:px-5 rounded-lg text-xs sm:text-[15px]" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#5a6880" }}>
+                  <Map size={13} /> Total roadmap
+                </div>
+              </div>
+            </div>
+
+            {/* Mock progress bars */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div className="rounded-xl p-3.5 px-[18px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                <div className="flex justify-between mb-2">
+                  <span className="flex items-center gap-[5px] text-xs sm:text-sm" style={{ color: "#7a8898" }}><CalendarDays size={14} /> Esta semana</span>
+                  <span className="text-xs sm:text-sm font-bold font-mono" style={{ color: "#e0e6f0" }}>{mockWeekDone}/{totalWeekBlocks} · {mockWeekPct}%</span>
+                </div>
+                <div className="h-1.5 rounded-sm overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                  <div className="h-full rounded-sm" style={{ width: `${mockWeekPct}%`, background: "linear-gradient(90deg,#7C3AED,#00D4FF)" }} />
+                </div>
+              </div>
+              <div className="rounded-xl p-3.5 px-[18px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                <div className="flex justify-between mb-2">
+                  <span className="flex items-center gap-[5px] text-xs sm:text-sm" style={{ color: "#7a8898" }}><Map size={14} /> Total roadmap</span>
+                  <span className="text-xs sm:text-sm font-bold font-mono" style={{ color: "#e0e6f0" }}>{mockTotalDone}/{mockTotalPhases} fases · {mockTotalPct}%</span>
+                </div>
+                <div className="h-1.5 rounded-sm overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                  <div className="h-full rounded-sm" style={{ width: `${mockTotalPct}%`, background: "linear-gradient(90deg,#FF6B35,#FFB800)" }} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mock area legend */}
+          <div className="flex gap-2 flex-wrap mb-5 items-center">
+            {Object.entries(hoursPerArea).map(([id, mins]) => {
+              const m = AREA_META[id];
+              return (
+                <div key={id} className="flex items-center gap-1 py-[3px] px-[9px] rounded-full" style={{ background: m.color + "14", border: `1px solid ${m.color}30` }}>
+                  <m.IconC size={10} style={{ color: m.color, flexShrink: 0 }} />
+                  <span className="text-[10px] sm:text-xs font-semibold" style={{ color: m.color }}>{m.label}</span>
+                  <span className="text-[10px] sm:text-xs" style={{ color: "#4a5060" }}>{Math.floor(mins/60) > 0 ? `${Math.floor(mins/60)}h` : ""}{mins%60 > 0 ? `${mins%60}m` : ""}</span>
+                </div>
+              );
+            })}
+            <span className="text-[11px] sm:text-[13px] font-mono ml-auto" style={{ color: "#3a4a5a" }}>{Math.floor(totalWeekMin/60)}h {totalWeekMin%60}m / semana</span>
+          </div>
+
+          {/* Mock heatmap table */}
+          <div className="rounded-[14px] overflow-hidden mb-4" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ width: "110px", padding: "10px 14px", textAlign: "left" }} className="hidden sm:table-cell" />
+                  <th style={{ width: "36px", padding: "10px 6px", textAlign: "left" }} className="sm:hidden" />
+                  {calendarWeek.map((day, di) => (
+                    <th key={di} className="text-[9px] sm:text-[11px] font-bold font-mono uppercase tracking-wider" style={{
+                      color: di === mockTodayIdx ? "#a78bfa" : "#4a5a6a",
+                      padding: "10px 0",
+                      textAlign: "center",
+                      background: di === mockTodayIdx ? "rgba(167,139,250,0.06)" : "transparent",
+                    }}>
+                      {day.shortDay}
+                      {di === mockTodayIdx && <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#a78bfa", margin: "3px auto 0" }} />}
+                    </th>
+                  ))}
+                  <th className="text-[9px] sm:text-[11px] font-mono" style={{ color: "#3a4a5a", padding: "10px 14px 10px 8px", textAlign: "right", width: "80px" }}>Progreso</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mockAreaRows.map(({ areaId, meta, cells, total, done }) => {
+                  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                  return (
+                    <tr key={areaId} style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                      <td className="hidden sm:table-cell" style={{ padding: "8px 14px" }}>
+                        <div className="flex items-center gap-[6px]">
+                          <meta.IconC size={13} style={{ color: meta.color, flexShrink: 0 }} />
+                          <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: meta.color }}>{meta.label}</span>
+                        </div>
+                      </td>
+                      <td className="sm:hidden" style={{ padding: "6px 8px" }}>
+                        <div className="flex items-center justify-center">
+                          <meta.IconC size={14} style={{ color: meta.color }} />
+                        </div>
+                      </td>
+                      {cells.map((cell, di) => (
+                        <td key={di} style={{ padding: "6px 0", textAlign: "center", background: di === mockTodayIdx ? "rgba(167,139,250,0.06)" : "transparent" }}>
+                          {cell ? (
+                            <div
+                              className="w-5 h-5 sm:w-7 sm:h-7 inline-flex items-center justify-center rounded-md sm:rounded-lg"
+                              style={{
+                                background: mockChecked[cell.key] ? meta.color : "transparent",
+                                border: `2px solid ${mockChecked[cell.key] ? meta.color : meta.color + "45"}`,
+                              }}
+                            >
+                              {mockChecked[cell.key] && <Check size={11} strokeWidth={3} style={{ color: "#000" }} />}
+                            </div>
+                          ) : (
+                            <span className="inline-block text-[10px] sm:text-xs" style={{ color: "#2a3040" }}>—</span>
+                          )}
+                        </td>
+                      ))}
+                      <td style={{ padding: "6px 14px 6px 8px" }}>
+                        <div className="flex flex-col items-end gap-[3px]">
+                          <span className="text-[10px] sm:text-xs font-mono font-semibold" style={{ color: meta.color }}>{done}/{total}</span>
+                          <div className="w-full max-w-[56px] h-[3px] rounded-sm overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                            <div className="h-full rounded-sm" style={{ width: `${pct}%`, background: meta.color }} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mock principles */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { icon: "🔁", title: "DSA diario", body: "30 min cada día > 3h esporádicas." },
+              { icon: "🎯", title: "Una área profunda", body: "60 min concentrado vale más que 4×15 min." },
+              { icon: "📝", title: "Siempre un output", body: "Cada sesión debe producir algo." },
+              { icon: "⚡", title: "Regla 25 min", body: "Si LeetCode no cede, estudia la solución." },
+            ].map((p, i) => (
+              <div key={i} className="p-3 rounded-[10px]" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                <span className="text-[15px]">{p.icon}</span>
+                <div className="text-[11.5px] sm:text-[13px] font-semibold my-[5px] mb-[3px]" style={{ color: "#b0bcc8" }}>{p.title}</div>
+                <div className="text-[11px] sm:text-[13px] leading-relaxed" style={{ color: "#4a5a6a" }}>{p.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Login overlay ── */}
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10, background: "radial-gradient(ellipse at center, rgba(10,13,18,0.4) 0%, rgba(10,13,18,0.75) 100%)" }}>
+          <div className="rounded-2xl p-7 sm:p-9 max-w-[440px] w-full mx-4" style={{ background: "rgba(10,13,18,0.9)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(16px)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+            {/* Header */}
+            <div className="text-center mb-5">
+              <BarChart2 size={32} style={{ color: "#a78bfa", margin: "0 auto 12px" }} />
+              <h2 className="text-xl sm:text-2xl font-bold mb-1.5" style={{ color: "#e0e6f0" }}>Progress Tracker</h2>
+              <p className="text-[13px] sm:text-sm" style={{ color: "#5a6880" }}>
+                Tu centro de control para el roadmap de 6 meses.
+              </p>
+            </div>
+
+            {/* Feature list */}
+            <div className="flex flex-col gap-2.5 mb-6">
+              {[
+                { icon: CalendarDays, color: "#00D4FF", text: "Seguimiento semanal con heatmap interactivo" },
+                { icon: Flame, color: "#FF6B35", text: "Rachas y estadísticas de consistencia" },
+                { icon: TrendingUp, color: "#00C896", text: "Historial de progreso semana a semana" },
+                { icon: Target, color: "#FFB800", text: "Timeline automático de fases por área" },
+                { icon: Map, color: "#a78bfa", text: "Vista total del roadmap con % por fase" },
+              ].map((feat, i) => (
+                <div key={i} className="flex items-center gap-3 rounded-lg py-2 px-3" style={{ background: feat.color + "08", border: `1px solid ${feat.color}18` }}>
+                  <div className="w-7 h-7 rounded-md flex items-center justify-center shrink-0" style={{ background: feat.color + "18" }}>
+                    <feat.icon size={14} style={{ color: feat.color }} />
+                  </div>
+                  <span className="text-[12.5px] sm:text-[13.5px]" style={{ color: "#b0bcc8" }}>{feat.text}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA */}
             <button
               onClick={() => setAuthOpen(true)}
-              className="inline-flex items-center gap-2 py-3 px-6 rounded-lg cursor-pointer font-semibold text-sm"
+              className="w-full inline-flex items-center justify-center gap-2 py-3 px-6 rounded-lg cursor-pointer font-semibold text-sm"
               style={{ background: "linear-gradient(135deg, #7C3AED, #00D4FF)", color: "#fff", border: "none", fontFamily: "'DM Sans', sans-serif" }}
             >
               <LogIn size={16} /> Iniciar sesión
             </button>
+            <p className="text-center text-[11px] mt-2.5" style={{ color: "#3a4a5a" }}>Gratis — solo necesitas un email.</p>
           </div>
         </div>
+
         <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
       </div>
     );
