@@ -80,7 +80,7 @@ const roadmapData = [
           {
             topic: "Caching strategies: read-through, write-through, write-behind, cache-aside",
             why: "El caching es la herramienta más poderosa y más mal usada en sistemas distribuidos. Cache-aside es simple pero puede quedar stale; write-through garantiza consistencia pero agrega latencia en escrituras. El libro de SDI Vol. 1 usa el diseño de un sistema de caché distribuido como uno de sus casos de estudio centrales, aplicando exactamente estas estrategias en el contexto de sistemas reales.",
-            resource: { name: "Redis — Caching Architecture Patterns (docs)", url: "https://redis.io/docs/manual/patterns/", free: true },
+            resource: { name: "Redis — Caching Architecture Patterns (docs)", url: "https://redis.io/docs/latest/develop/clients/patterns/", free: true },
             miniDeliverable: "Implementar cache-aside con Redis o un diccionario en memoria para una función que simula una query lenta (sleep de 200ms). Medir y documentar la mejora de latencia con y sin caché.",
           },
         ],
@@ -208,7 +208,7 @@ const roadmapData = [
           {
             topic: "Logs estructurados vs logs de texto plano",
             why: "La diferencia entre console.log('Error') y logger.error({ userId, errorCode, duration }, 'Fallo') parece cosmética pero es fundamental. Los logs estructurados (JSON) son consultables: 'muéstrame todos los errores del userId X en los últimos 30 minutos'. Los logs de texto plano solo sirven para leer línea por línea. Un sistema sin logs estructurados es opaco en producción.",
-            resource: { name: "Grafana — Structured Logging Guide", url: "https://grafana.com/blog/2022/06/07/how-to-do-structured-logging-right/", free: true },
+            resource: { name: "Grafana — Structured Logging Guide", url: "https://grafana.com/blog/2022/05/16/all-things-logs-best-practices-for-logging-and-grafana-loki/", free: true },
             miniDeliverable: "Migrar los logs de un servicio de práctica de console.log a logs JSON estructurados con al menos 5 campos (timestamp, level, service, userId, duration). Verificar que son consultables en Grafana Loki o similar.",
           },
           {
@@ -463,7 +463,7 @@ const roadmapData = [
           {
             topic: "RAG vs Fine-tuning vs Prompting puro: el framework de decisión",
             why: "Prompting puro: el modelo ya sabe y solo necesita instrucciones. RAG: necesita información específica y reciente. Fine-tuning: necesitas estilo muy específico o comportamientos que el prompting no captura, o quieres reducir el costo de prompts largos a escala. El error más común es hacer fine-tuning cuando RAG habría bastado — es costoso, lento y difícil de actualizar.",
-            resource: { name: "Hamel Husain — A Practical Guide to LLM Fine-Tuning (blog)", url: "https://hamel.dev/blog/posts/finetune/", free: true },
+            resource: { name: "Hamel Husain — A Practical Guide to LLM Fine-Tuning (blog)", url: "https://hamel.dev/notes/llm/finetuning/", free: true },
             miniDeliverable: "Escribir un documento de decisión de 500 palabras para un caso de uso real o hipotético: analizar si usarías prompting, RAG o fine-tuning, con la justificación técnica y económica de cada opción descartada.",
           },
           {
@@ -483,7 +483,7 @@ const roadmapData = [
           { name: "Latent Space Podcast", url: "https://www.latent.space", free: true },
           { name: "Papers With Code", url: "https://paperswithcode.com", free: true },
           { name: "AI Engineer Discord", url: "https://discord.gg/aiengineers", free: true },
-          { name: "The AI Engineer Newsletter", url: "https://www.theaiengineer.news", free: true },
+          { name: "Simon Willison's Weblog — AI Engineering", url: "https://simonwillison.net", free: true },
         ],
         objectives: [
           {
@@ -1109,7 +1109,7 @@ const roadmapData = [
         metric: "Tienes un flujo de trabajo donde la IA maneja tareas repetitivas de forma autónoma. Puedes cuantificar el impacto en tu productividad con datos reales. Has publicado tu experiencia y contribuido al ecosistema MCP.",
         resources: [
           { name: "Anthropic API — Tool Use", url: "https://docs.anthropic.com/en/docs/build-with-claude/tool-use", free: true },
-          { name: "Claude Agent SDK", url: "https://github.com/anthropics/claude-code-sdk", free: true },
+          { name: "Claude Agent SDK", url: "https://github.com/anthropics/claude-agent-sdk-python", free: true },
           { name: "GitHub Actions Documentation", url: "https://docs.github.com/en/actions", free: true },
           { name: "MCP Servers Registry", url: "https://github.com/modelcontextprotocol/servers", free: true },
         ],
@@ -1117,7 +1117,7 @@ const roadmapData = [
           {
             topic: "Workflows agénticos: diseñar tareas donde la IA opera de forma autónoma",
             why: "Un workflow agéntico es una cadena de acciones donde el modelo toma decisiones intermedias sin intervención humana: lee código → identifica un problema → propone una solución → la implementa → ejecuta tests → reporta el resultado. La clave no es delegar todo — es identificar qué tareas son seguras para automatizar (generación de tests, linting, documentación) y cuáles requieren supervisión humana (cambios de lógica de negocio, decisiones de arquitectura). El diseño del workflow es donde está el valor, no la ejecución.",
-            resource: { name: "Claude Code SDK — Building Agentic Workflows", url: "https://github.com/anthropics/claude-code-sdk", free: true },
+            resource: { name: "Claude Code SDK — Building Agentic Workflows", url: "https://github.com/anthropics/claude-agent-sdk-python", free: true },
             miniDeliverable: "Documento de diseño de 3 workflows agénticos para tu proyecto: (1) generación automática de tests para funciones nuevas, (2) revisión de PR con checklist personalizado, (3) actualización de documentación cuando cambia el código. Para cada uno: diagrama de flujo, herramientas necesarias, puntos de supervisión humana, y criterios de éxito.",
           },
           {

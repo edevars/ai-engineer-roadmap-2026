@@ -233,7 +233,7 @@ const cloudAwsData = [
         resources: [
           { name: "AWS Security Best Practices (Whitepaper)", url: "https://docs.aws.amazon.com/whitepapers/latest/aws-security-best-practices/welcome.html", free: true },
           { name: "AWS Security Blog", url: "https://aws.amazon.com/blogs/security/", free: true },
-          { name: "Tutorials Dojo — Security Specialty Cheat Sheets", url: "https://tutorialsdojo.com/aws-cheat-sheets-security-identity-compliance-services/", free: true },
+          { name: "Tutorials Dojo — IAM Cheat Sheet", url: "https://tutorialsdojo.com/aws-identity-and-access-management-iam/", free: true },
         ],
         objectives: [
           {
@@ -501,7 +501,7 @@ const cloudAwsData = [
           {
             topic: "DynamoDB avanzado: single-table design, transactions, streams, TTL",
             why: "Single-table design almacena múltiples entidades (usuarios, órdenes, productos) en una sola tabla, optimizando queries con overloaded keys y GSIs. Transactions garantizan ACID para escrituras multi-item. DynamoDB Streams captura cambios en tiempo real — trigger Lambda para event-driven processing. TTL elimina datos expirados automáticamente sin costo de write. Dominar single-table design es lo que separa a un DynamoDB principiante de un experto.",
-            resource: { name: "Alex DeBrie — DynamoDB Single-Table Design", url: "https://www.alexdebrie.com/posts/dynamodb-single-table-design/", free: true },
+            resource: { name: "Alex DeBrie — DynamoDB Single-Table Design", url: "https://www.alexdebrie.com/posts/dynamodb-single-table/", free: true },
             miniDeliverable: "Implementar single-table design para una app de blog: Users, Posts, Comments en una sola tabla con overloaded PK/SK. Documentar los 5 access patterns principales y cómo cada uno se resuelve con query (no scan).",
           },
           {
