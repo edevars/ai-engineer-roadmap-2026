@@ -5,10 +5,10 @@ import {
   Target, Zap, BookOpen, TrendingUp, ArrowRight,
   Clock, Brain, Flame, CheckCircle2, BarChart2,
 } from "lucide-react";
-import { roadmapData } from "../data/roadmap-data";
+import { HIDDEN_AREA_IDS, roadmapData } from "../data/roadmap-data";
 import { AREA_META } from "../data/area-meta";
 
-const AREAS = [
+const _AREAS_ALL = [
   {
     id: "system-design", icon: Layers,
     headline: "System Design",
@@ -46,6 +46,9 @@ const AREAS = [
     months: "4 meses", phases: 4,
   },
 ];
+
+// Áreas visibles en el home (filtra las ocultas declaradas en roadmap-data.jsx).
+const AREAS = _AREAS_ALL.filter((a) => !HIDDEN_AREA_IDS.has(a.id));
 
 const PRINCIPLES = [
   { icon: Clock, title: "Consistencia > Intensidad", body: "30 minutos diarios superan 4 horas esporádicas. El cerebro construye conexiones con repetición espaciada, no con maratones." },

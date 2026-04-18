@@ -1,4 +1,8 @@
-export const calendarWeek = [
+// Áreas ocultas del tracker — se filtran al exportar `calendarWeek` pero se
+// conservan en el dataset completo `_calendarWeekAll` por si se reactivan.
+const HIDDEN_AREA_IDS = new Set(["observabilidad", "ingles-tecnico", "ai-code-tools"]);
+
+const _calendarWeekAll = [
   {
     day: "Lunes", shortDay: "Lun", totalMin: 105,
     focus: "System Design + DSA + Inglés",
@@ -62,3 +66,13 @@ export const calendarWeek = [
     ],
   },
 ];
+
+export const calendarWeek = _calendarWeekAll
+  .map((day) => {
+    const blocks = day.blocks.filter((b) => !HIDDEN_AREA_IDS.has(b.area));
+    const totalMin = blocks.reduce((sum, b) => sum + (b.duration || 0), 0);
+    return { ...day, blocks, totalMin };
+  })
+  .filter((day) => day.blocks.length > 0);
+
+export { _calendarWeekAll };

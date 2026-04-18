@@ -2,14 +2,22 @@
  * Phase schedule engine — maps phase labels to absolute date ranges given a start date.
  */
 
+// Áreas ocultas del tracker (duplicado intencional del set en roadmap-data.jsx
+// para evitar imports desde un módulo .jsx en utilidades puras).
+const HIDDEN_AREA_IDS = new Set(["observabilidad", "ingles-tecnico", "ai-code-tools"]);
+
 // Static mapping: per area, each phase's relative month offsets (1-indexed from start)
-const PHASE_MONTHS = {
+const _PHASE_MONTHS_ALL = {
   "system-design":  [{ start: 1, end: 2 }, { start: 3, end: 4 }, { start: 5, end: 6 }],
   "observabilidad": [{ start: 1, end: 1 }, { start: 2, end: 2 }, { start: 3, end: 3 }],
   "ai-engineering": [{ start: 1, end: 2 }, { start: 3, end: 4 }, { start: 5, end: 6 }, { start: 7, end: 8 }],
   "algoritmos":     [{ start: 1, end: 2 }, { start: 3, end: 4 }, { start: 5, end: 6 }],
   "ingles-tecnico": [{ start: 1, end: 1 }, { start: 2, end: 2 }, { start: 3, end: 3 }],
 };
+
+const PHASE_MONTHS = Object.fromEntries(
+  Object.entries(_PHASE_MONTHS_ALL).filter(([id]) => !HIDDEN_AREA_IDS.has(id)),
+);
 
 function addMonths(date, months) {
   const d = new Date(date);
