@@ -275,7 +275,7 @@ const HomePage = () => {
               <div key={i} className="rounded-[10px] p-2 sm:p-3" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
                 <div className="text-[9px] sm:text-[11px] font-bold font-mono uppercase text-center mb-2" style={{ color: "#4a5a6a" }}>{d.day}</div>
                 <div className="flex flex-col gap-1">
-                  {d.blocks.map((b, j) => {
+                  {d.blocks.filter((b) => AREA_META[b.area]).map((b, j) => {
                     const meta = AREA_META[b.area];
                     return (
                       <div key={j} className="rounded-[4px] py-0.5 sm:py-1 px-1" style={{ background: meta.color + "18" }}>
